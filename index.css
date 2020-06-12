@@ -50,6 +50,7 @@ section {
   display: flex;
   flex-direction: row;
   margin: 2rem 0;
+  flex-wrap: wrap;
 }
 
 .events__list-title {
@@ -60,7 +61,6 @@ section {
 /* Event item */
 .events__item {
   height: 30rem;
-  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -69,10 +69,14 @@ section {
   margin: 1rem;
   overflow: hidden;
   transition: all 0.2s;
+  border: 0.7px solid #dae0e6;
 }
 
-.events__item {
-  border: 0.7px solid #dae0e6;
+.events__item--top {
+  width: 30%;
+}
+.events__item--bottom {
+  width: 20%;
 }
 
 .events__item:hover {
@@ -95,7 +99,7 @@ section {
 }
 
 .events__item-header--bottom {
-  background-color: lightgrey;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .events__item-header--meetup {
@@ -207,7 +211,7 @@ section {
     linear-gradient(101deg, rgba(255, 123, 55, 1), rgba(255, 186, 54, 1));
 }
 
-.events__item-details-button--webinar {
+.events__item-details-button--webinar--free .events__item-details-button--webinar--premium {
   background-image: linear-gradient(
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 0)
@@ -286,7 +290,23 @@ section {
     left bottom no-repeat;
 }
 
-.lg--webinar {
+.lg--webinar--free {
+  background: linear-gradient(
+      59deg,
+      rgba(113, 6, 206, 1) 7%,
+      rgba(186, 156, 156, 1) 56%
+    )
+    left bottom no-repeat;
+
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(113, 6, 206, 1) 7%,
+      rgba(186, 156, 156, 1) 56%
+    )
+    left bottom no-repeat;
+}
+
+.lg--webinar--premium {
   background: linear-gradient(
       59deg,
       rgba(113, 6, 206, 1) 7%,
@@ -331,8 +351,12 @@ section {
   fill: url(#mission-rg);
 }
 
-.events__item-icon-gradient--webinar svg * {
-  fill: url(#webinar-rg);
+.events__item-icon-gradient--webinar--free svg * {
+  fill: url(#webinar--free-rg);
+}
+
+.events__item-icon-gradient--webinar--premium svg * {
+  fill: url(#webinar--premium-rg);
 }
 
 .events__item-icon-gradient--meetup svg * {

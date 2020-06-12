@@ -48,6 +48,10 @@ const icons =
     icon: "fa-handshake",
     lg: "lg",
     twoX: "2x"
+  },
+  premium: {
+    icon: "fa-gem",
+    sm: "sm"
   }
 }
 
@@ -56,7 +60,8 @@ let events = [];
 const eventsListHackathon = document.querySelector("#events-list__hackathon");
 const eventsListLeap = document.querySelector("#events-list__leap");
 const eventsListMission = document.querySelector("#events-list__mission");
-const eventsListWebinar = document.querySelector("#events-list__webinar");
+const eventsListWebinarFree = document.querySelector("#events-list__webinar--free");
+const eventsListWebinarPremium = document.querySelector("#events-list__webinar--premium");
 const eventsListMeetup = document.querySelector("#events-list__meetup");
 
 const eventInfoButton = document.getElementById("event-info-button");
@@ -76,7 +81,13 @@ function init() {
  */
 function createEventItem(event) {
   const eventItem = document.createElement("div");
-  eventItem.setAttribute("class", "events__item");
+  const type = event.type;
+
+  if (type === 'hackathon' || type === 'leap' || type === 'mission') {
+    eventItem.classList.add("events__item", "events__item--top");
+  } else {
+    eventItem.classList.add("events__item", "events__item--bottom");
+  }
 
   const header = createEventHeader(event);
   const border = createEventBorder(event);
@@ -105,8 +116,10 @@ function addEventIntoDOM(type, eventElement) {
       return eventsListLeap.appendChild(eventElement);
     case 'mission':
       return eventsListMission.appendChild(eventElement);
-    case 'webinar':
-      return eventsListWebinar.appendChild(eventElement);
+    case 'webinar--free':
+      return eventsListWebinarFree.appendChild(eventElement);
+    case 'webinar--premium':
+      return eventsListWebinarPremium.appendChild(eventElement);
     case 'meetup':
       return eventsListMeetup.appendChild(eventElement);
     default:
@@ -122,7 +135,7 @@ function createEventHeader(event) {
   const eventItemHeader = document.createElement("div");
   eventItemHeader.classList.add(
     "events__item-header",
-    "events__item-header--top"
+    `events__item-header--${event.position}`
   );
 
   const eventItemHeaderWrapper = document.createElement("div");
@@ -193,6 +206,18 @@ function createEventContent(event) {
   eventContentDataWrapper.appendChild(eventDate);
   eventContentDataWrapper.appendChild(eventSeparator);
   eventContentDataWrapper.appendChild(eventLocation);
+
+  if (event.type.includes('webinar') && event.premium) {
+    const webinarPremiumSpan = document.createElement("span");
+    webinarPremiumSpan.setAttribute("class", "events__item-diamond")
+  
+    const premiumIcon = document.createElement("i");
+    premiumIcon.classList.add("fas", `${event.premiumIcon.icon}`, `fa-${event.premiumIcon.sm}`);
+    
+    webinarPremiumSpan.appendChild(premiumIcon)
+    webinarPremiumSpan.appendChild(document.createTextNode(" Premium"));
+    eventContent.appendChild(webinarPremiumSpan)
+  }
 
   eventContent.appendChild(eventContentTitle);
   eventContent.appendChild(eventContentDataWrapper);
@@ -294,6 +319,8 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 0,
           title: "We still hacking amidst COVID19!",
           date: "June 26, 2020",
+          position: "top",
+          premium: false,
           location: "Vancouver, BC",
           type: "hackathon",
           color: {
@@ -308,6 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 1,
           title: "Let's take a leap into this new adventure!",
           date: "June 30, 2020",
+          position: "top",
+          premium: false,
           location: "Toronto, ON",
           type: "leap",
           color: {
@@ -322,6 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 2,
           title: "Rebuilding our organization in 3 easy steps",
           date: "July 3, 2020",
+          position: "top",
+          premium: false,
           location: "New York, NY",
           type: "mission",
           color: {
@@ -332,6 +363,104 @@ document.addEventListener('DOMContentLoaded', () => {
           content:
             ``,
         },
+        {
+          id: 3,
+          title: "Rebuilding our organization in 3 easy steps",
+          date: "July 3, 2020",
+          position: "top",
+          premium: false,
+          location: "New York, NY",
+          type: "mission",
+          color: {
+            colorStart: colors.mission.start,
+            colorEnd: colors.mission.end
+          },
+          icon: icons.mission,
+          content:
+            ``,
+        },
+        {
+          id: 4,
+          title: "Let's do this",
+          date: "Aug 6, 2020",
+          position: "top",
+          premium: false,
+          location: "Vancouver, BC",
+          type: "mission",
+          color: {
+            colorStart: colors.mission.start,
+            colorEnd: colors.mission.end
+          },
+          icon: icons.mission,
+          content:
+            ``,
+        },
+        {
+          id: 5,
+          title: "Expanding dev teams post COVID",
+          date: "Sept 15, 2020",
+          position: "top",
+          premium: false,
+          location: "Los Angeles, CA",
+          type: "mission",
+          color: {
+            colorStart: colors.mission.start,
+            colorEnd: colors.mission.end
+          },
+          icon: icons.mission,
+          content:
+            ``,
+        },
+        {
+          id: 6,
+          title: "Node.js Meetup in Seattle",
+          date: "July 15, 2020",
+          position: "bottom",
+          premium: false,
+          location: "Seattle, WA",
+          type: "meetup",
+          color: {
+            colorStart: colors.meetup.start,
+            colorEnd: colors.meetup.end
+          },
+          icon: icons.meetup,
+          content:
+            ``,
+        },
+        {
+          id: 7,
+          title: "OpenGL Webinar",
+          date: "July 12, 2020",
+          position: "bottom",
+          premium: false,
+          location: "Seattle, WA",
+          type: "webinar--free",
+          color: {
+            colorStart: colors.webinar.start,
+            colorEnd: colors.webinar.end
+          },
+          icon: icons.webinar,
+          content:
+            ``,
+        },
+        {
+          id: 8,
+          title: "Java Webinar with special guest",
+          date: "July 13, 2020",
+          position: "bottom",
+          premium: true,
+          location: "Seattle, WA",
+          type: "webinar--premium",
+          color: {
+            colorStart: colors.webinar.start,
+            colorEnd: colors.webinar.end
+          },
+          icon: icons.webinar,
+          premiumIcon: icons.premium,
+          content:
+            ``,
+        },
+        
       ];
     } else {
       window.setTimeout(loadData, 250);
