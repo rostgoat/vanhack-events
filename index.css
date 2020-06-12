@@ -99,6 +99,10 @@ section {
   background-color: lightgrey;
 }
 
+.events__item-header--meetup {
+  background-color: none;
+}
+
 .events__item-header-wrapper {
   display: flex;
   align-self: center;
@@ -110,22 +114,7 @@ section {
   height: 2%;
 }
 
-/* Icon HTML Gradient for FA SVG */
-.events__item-icon-gradient--hackathon svg * {
-  fill: url(#hackathon-rg);
-}
 
-.events__item-icon-gradient--leap svg * {
-  fill: url(#leap-rg);
-}
-
-.events__item-icon-gradient--mission svg * {
-  fill: url(#mission-rg);
-}
-
-.events__item-icon-gradient--webinar svg * {
-  fill: url(#webinar-rg);
-}
 
 /* Event Item Content */
 .events__item-content {
@@ -227,6 +216,14 @@ section {
     linear-gradient(101deg, rgba(113, 6, 206, 1), rgba(186, 156, 156, 1));
 }
 
+.events__item-details-button--meetup {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(101deg, rgba(134,161,241,1), rgba(178,206,6,1));
+}
+
 .events__item-details-button:hover {
   cursor: pointer;
 }
@@ -304,6 +301,43 @@ section {
       rgba(186, 156, 156, 1) 56%
     )
     left bottom no-repeat;
+}
+
+.lg--meetup {
+  background: linear-gradient(
+      59deg,
+      rgba(134, 161, 241, 1) 42%,
+      rgba(178, 206, 6, 1) 75%
+    )
+    left bottom no-repeat;
+
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(134, 161, 241, 1) 42%,
+      rgba(178, 206, 6, 1) 75%
+    )
+    left bottom no-repeat;
+}
+
+/* Icon HTML Gradient for FA SVG */
+.events__item-icon-gradient--hackathon svg * {
+  fill: url(#hackathon-rg);
+}
+
+.events__item-icon-gradient--leap svg * {
+  fill: url(#leap-rg);
+}
+
+.events__item-icon-gradient--mission svg * {
+  fill: url(#mission-rg);
+}
+
+.events__item-icon-gradient--webinar svg * {
+  fill: url(#webinar-rg);
+}
+
+.events__item-icon-gradient--meetup svg * {
+  fill: url(#meetup-rg);
 }
 
 /* Linear Gradient Text */
