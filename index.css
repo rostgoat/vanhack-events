@@ -24,6 +24,7 @@ section {
   box-shadow: rgba(0, 0, 0, 0.3) 0 0 3px;
 }
 
+/* Header */
 .header {
   display: flex;
   align-self: center;
@@ -39,10 +40,12 @@ section {
   color: white;
 }
 
+/* Events Container */
 .events {
   margin: 2rem 0;
 }
 
+/* Events List Container */
 .events__list {
   display: flex;
   flex-direction: row;
@@ -51,41 +54,6 @@ section {
 
 .events__list-title {
   text-align: center;
-}
-.events__list-title--hackaton {
-  background: -webkit-linear-gradient(
-      59deg,
-      rgba(6, 117, 206, 1) 7%,
-      rgba(37, 193, 203, 1) 58%
-    )
-    left bottom no-repeat;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.events__list-title--leap {
-  background: -webkit-linear-gradient(
-      59deg,
-      rgba(101, 222, 43, 1) 7%,
-      rgba(177, 207, 83, 1) 58%
-    )
-    left bottom no-repeat;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.events__list-title--mission {
-  background: -webkit-linear-gradient(
-      59deg,
-      rgba(255, 123, 55, 1) 7%,
-      rgba(255, 186, 54, 1) 58%
-    )
-    left bottom no-repeat;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.events__list-title {
   margin: 1rem;
 }
 
@@ -120,8 +88,15 @@ section {
 .events__item-header {
   height: 29%;
   display: flex;
-  align-self: center;
   justify-content: center;
+}
+
+.events__item-header--top {
+  background-color: #3b4146;
+}
+
+.events__item-header--bottom {
+  background-color: lightgrey;
 }
 
 .events__item-header-wrapper {
@@ -130,6 +105,12 @@ section {
   justify-content: center;
 }
 
+/* Event Item Header Border */
+.events__item-header-border {
+  height: 2%;
+}
+
+/* Icon HTML Gradient for FA SVG */
 .events__item-icon-gradient--hackathon svg * {
   fill: url(#hackathon-rg);
 }
@@ -142,35 +123,8 @@ section {
   fill: url(#mission-rg);
 }
 
-.events__item-header-border {
-  height: 0.5%;
-}
-
-.events__item-header-border--hackathon {
-  background: linear-gradient(
-      59deg,
-      rgba(6, 117, 206, 1) 7%,
-      rgba(37, 193, 203, 1) 58%
-    )
-    left bottom no-repeat;
-}
-
-.events__item-header-border--leap {
-  background: linear-gradient(
-      59deg,
-      rgba(101, 222, 43, 1) 7%,
-      rgba(177, 207, 83, 1) 58%
-    )
-    left bottom no-repeat;
-}
-
-.events__item-header-border--mission {
-  background: linear-gradient(
-      59deg,
-      rgba(255, 123, 55, 1) 7%,
-      rgba(255, 186, 54, 1) 58%
-    )
-    left bottom no-repeat;
+.events__item-icon-gradient--webinar svg * {
+  fill: url(#webinar-rg);
 }
 
 /* Event Item Content */
@@ -183,13 +137,6 @@ section {
   justify-content: center;
 }
 
-.events__item-content--premium {
-  /* background-color: #3b4146; */
-}
-.events__item-content--free {
-  /* background-color: #DAE0E6; */
-}
-
 /* Event Item Footer*/
 .events__item-footer {
   height: 15%;
@@ -198,13 +145,6 @@ section {
   align-items: center;
   justify-content: space-between;
   padding: 0 0.5rem;
-}
-
-.events__item-footer--premium {
-  background-color: #3b4146;
-}
-.events__item-footer--free {
-  /* background-color: #DAE0E6; */
 }
 
 /* Event Item Content Title */
@@ -255,15 +195,6 @@ section {
   box-shadow: 2px 1000px 1px #fff inset;
 }
 
-.events__item-details-button--premium {
-  background: rgb(255, 186, 54);
-  background: linear-gradient(
-    104deg,
-    rgba(255, 186, 54, 1) 51%,
-    rgba(255, 123, 55, 1) 100%
-  );
-}
-
 .events__item-details-button--hackathon {
   background-image: linear-gradient(
       rgba(255, 255, 255, 0),
@@ -288,6 +219,14 @@ section {
     linear-gradient(101deg, rgba(255, 123, 55, 1), rgba(255, 186, 54, 1));
 }
 
+.events__item-details-button--webinar {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(101deg, rgba(113, 6, 206, 1), rgba(186, 156, 156, 1));
+}
+
 .events__item-details-button:hover {
   cursor: pointer;
 }
@@ -301,5 +240,74 @@ section {
 /* Premium Span and Icon */
 .events__item-diamond {
   color: rgb(255, 186, 54);
-  font-size: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+/* Linear Gradients */
+.lg--hackaton {
+  background: linear-gradient(
+      59deg,
+      rgba(6, 117, 206, 1) 7%,
+      rgba(37, 193, 203, 1) 58%
+    )
+    left bottom no-repeat;
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(6, 117, 206, 1) 7%,
+      rgba(37, 193, 203, 1) 58%
+    )
+    left bottom no-repeat;
+}
+
+.lg--leap {
+  background: linear-gradient(
+      59deg,
+      rgba(101, 222, 43, 1) 7%,
+      rgba(177, 207, 83, 1) 58%
+    )
+    left bottom no-repeat;
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(101, 222, 43, 1) 7%,
+      rgba(177, 207, 83, 1) 58%
+    )
+    left bottom no-repeat;
+}
+
+.lg--mission {
+  background: linear-gradient(
+      59deg,
+      rgba(255, 123, 55, 1) 7%,
+      rgba(255, 186, 54, 1) 58%
+    )
+    left bottom no-repeat;
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(255, 123, 55, 1) 7%,
+      rgba(255, 186, 54, 1) 58%
+    )
+    left bottom no-repeat;
+}
+
+.lg--webinar {
+  background: linear-gradient(
+      59deg,
+      rgba(113, 6, 206, 1) 7%,
+      rgba(186, 156, 156, 1) 56%
+    )
+    left bottom no-repeat;
+
+  background: -webkit-linear-gradient(
+      59deg,
+      rgba(113, 6, 206, 1) 7%,
+      rgba(186, 156, 156, 1) 56%
+    )
+    left bottom no-repeat;
+}
+
+/* Linear Gradient Text */
+.lg-text {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
