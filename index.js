@@ -22,7 +22,7 @@ const colors =
   }
 }
 
-const icons = 
+const icons =
 {
   hackathon: {
     icon: "fa-laptop-code",
@@ -52,15 +52,19 @@ const icons =
 }
 
 
-var events = [];
+let events = [];
 const eventsListHackathon = document.querySelector("#events-list__hackathon");
+const eventsListLeap = document.querySelector("#events-list__leap");
+const eventsListMission = document.querySelector("#events-list__mission");
+const eventsListWebinar = document.querySelector("#events-list__webinar");
+const eventsListMeetup = document.querySelector("#events-list__meetup");
+
 const eventInfoButton = document.getElementById("event-info-button");
 
 /**
  * Initialize all the data at the start of the application
  */
 function init() {
-  console.log('events inside init', events)
   events.forEach(function (event) {
     createEventItem(event);
   });
@@ -84,7 +88,30 @@ function createEventItem(event) {
   eventItem.appendChild(content);
   eventItem.appendChild(footer);
 
-  eventsListHackathon.appendChild(eventItem);
+  addEventIntoDOM(event.type, eventItem)
+}
+
+/**
+ * Add elements into correct place into the DOM based on type
+ * 
+ * @param {String} type Event type
+ * @param {XMLDocument } type eventElement 
+ */
+function addEventIntoDOM(type, eventElement) {
+  switch (type) {
+    case 'hackathon':
+      return eventsListHackathon.appendChild(eventElement);
+    case 'leap':
+      return eventsListLeap.appendChild(eventElement);
+    case 'mission':
+      return eventsListMission.appendChild(eventElement);
+    case 'webinar':
+      return eventsListWebinar.appendChild(eventElement);
+    case 'meetup':
+      return eventsListMeetup.appendChild(eventElement);
+    default:
+      return;
+  }
 }
 
 /**
@@ -215,6 +242,10 @@ function createEventFooter(event) {
   return eventFooter;
 }
 
+/**
+ * Setup svg icons for event in DOM
+ * @param {Object} event Event Object
+ */
 function createEventSVG(event) {
   const svgURI = "http://www.w3.org/2000/svg";
 
@@ -284,6 +315,20 @@ document.addEventListener('DOMContentLoaded', () => {
             colorEnd: colors.leap.end
           },
           icon: icons.leap,
+          content:
+            ``,
+        },
+        {
+          id: 2,
+          title: "Rebuilding our organization in 3 easy steps",
+          date: "July 3, 2020",
+          location: "New York, NY",
+          type: "mission",
+          color: {
+            colorStart: colors.mission.start,
+            colorEnd: colors.mission.end
+          },
+          icon: icons.mission,
           content:
             ``,
         },
