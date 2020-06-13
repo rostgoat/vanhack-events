@@ -24,6 +24,12 @@ section {
   box-shadow: rgba(0, 0, 0, 0.3) 0 0 3px;
 }
 
+button:focus {
+  outline:none !important;
+}
+
+
+
 /* Header */
 .header {
   display: flex;
@@ -369,9 +375,112 @@ section {
   -webkit-text-fill-color: transparent;
 }
 
+/* Overlay when event item is clicked */
 .overlay {
-  width: 75%;
-  height: 75%;
+  width: 100%;
+  height: 100%;
   position: fixed;
   display: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.overlay-container {
+  width: 75%;
+  height: 75%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+
+.overlay__header {
+  height: 23%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.overlay__header-border {
+  height: 2%;
+}
+
+.overlay__content {
+  height: 45%;
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay__location-date-container {
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: initial;
+  padding: 0 4rem;
+  font-weight: bold;
+}
+
+.overlay__footer {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.overlay__title {
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0 4rem;
+}
+
+.overlay__separator {
+  padding: 0 1rem;
+}
+
+.event__text {
+  text-align: justify;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+}
+
+.overlay__location-date-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay__registration-button {
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-size: 2rem;
+  transition: all .2s ease-in;
+  cursor: pointer;
+  border: none;
+  color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.overlay__registration-button:hover {
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15), 0 5px 5px rgba(0,0,0,0.23);
+  transform: translateY(-3px);
+}
+
+.overlay__registration-button--mission {
+  background-image: linear-gradient(to right,#ff7b37 0%,#FFBA36 58%,#ff7b37 100%);
+}
+.overlay__registration-button--mission:hover {
+  background-position: right center;
 }

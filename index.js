@@ -57,6 +57,8 @@ const icons =
 
 
 let events = [];
+let overlayStatus = false;
+const overlay = document.getElementById('overlay');
 const eventsListHackathon = document.querySelector("#events-list__hackathon");
 const eventsListLeap = document.querySelector("#events-list__leap");
 const eventsListMission = document.querySelector("#events-list__mission");
@@ -64,7 +66,6 @@ const eventsListWebinarFree = document.querySelector("#events-list__webinar--fre
 const eventsListWebinarPremium = document.querySelector("#events-list__webinar--premium");
 const eventsListMeetup = document.querySelector("#events-list__meetup");
 
-const eventInfoButton = document.getElementById("event-info-button");
 
 /**
  * Initialize all the data at the start of the application
@@ -229,8 +230,6 @@ function createEventContent(event) {
  * Create Event Footer
  */
 function createEventFooter(event) {
-  const svgURI = "http://www.w3.org/2000/svg";
-
   const eventFooter = document.createElement("div");
   eventFooter.setAttribute("class", "events__item-footer");
 
@@ -243,7 +242,7 @@ function createEventFooter(event) {
   const svg = createEventSVG(event)
 
   const icon = document.createElement("i");
-  icon.classList.add("fas", `${event.icon.icon}`, `fa-${event.icon.lg}`);
+  icon.classList.add("fab", "fa-twitter", `fa-${event.icon.lg}`);
 
   eventSocialMedia.appendChild(svg);
   eventSocialMedia.appendChild(icon);
@@ -256,7 +255,8 @@ function createEventFooter(event) {
     "events__item-details-button",
     `events__item-details-button--${event.type}`
   );
-  eventDetailsButton.setAttribute("id", "event-info-button");
+  eventDetailsButton.setAttribute("type", "button")
+  eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
   eventDetailsButton.appendChild(document.createTextNode("Details"));
 
   eventDetails.appendChild(eventDetailsButton);
@@ -300,18 +300,33 @@ function createEventSVG(event) {
   return svg;
 }
 
+function showEventDetails(event) {
+  overlayStatus = !overlayStatus;
+  if (overlayStatus) {
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+  } 
+  console.log('clicked on event button', JSON.stringify(event, null, 2))
+}
+
+
+/**
+ * Some function to keep track of window global events
+ * @param {Event} event DOM event
+ */
+window.onclick = function(event) {
+  if (event.target == overlay) {
+    overlay.style.display = "none";
+    overlayStatus = !overlayStatus;
+  }
+}
+
 /**
  * Setup event listeners when application is loading to prevent
  * them from throwing null errors
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('were loading stuff?')
-  // eventInfoButton.addEventListener('click', (e) => {
-  //   e.preventDefault();
-
-  //   console.log('clicked')
-  // })
-
   const loadData = () => {
     if (typeof colors !== 'undefined') {
       events = [
