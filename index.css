@@ -389,6 +389,7 @@ button:focus {
   background-color: rgba(0,0,0,0.6);
 }
 
+
 .overlay-container {
   width: 75%;
   height: 75%;
@@ -396,6 +397,18 @@ button:focus {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
+  animation: overlay-animation .5s ease;
+}
+@keyframes overlay-animation {
+  0%   { 
+    opacity: 0; 
+    transform: translateY(-200px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0);
+
+  }
 }
 
 .overlay__header {
@@ -481,6 +494,6 @@ button:focus {
 .overlay__registration-button--mission {
   background-image: linear-gradient(to right,#ff7b37 0%,#FFBA36 58%,#ff7b37 100%);
 }
-.overlay__registration-button--mission:hover {
+.overlay__registration-button--mission:active {
   background-position: right center;
 }
