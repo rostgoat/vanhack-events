@@ -389,7 +389,7 @@ button:focus {
   background-color: rgba(0,0,0,0.6);
 }
 
-
+/* Overlay container */
 .overlay-container {
   width: 75%;
   height: 75%;
@@ -399,6 +399,8 @@ button:focus {
   border-radius: 5px;
   animation: overlay-animation .5s ease;
 }
+
+/* Overlay Container Animation on enter */
 @keyframes overlay-animation {
   0%   { 
     opacity: 0; 
@@ -411,6 +413,7 @@ button:focus {
   }
 }
 
+/* Overlay header */
 .overlay__header {
   height: 23%;
   display: flex;
@@ -419,6 +422,7 @@ button:focus {
   margin-top: 3rem;
 }
 
+/* Overlay border */
 .overlay__header-border {
   height: 2%;
 }
@@ -431,6 +435,7 @@ button:focus {
   justify-content: center;
 }
 
+/* Overlay location and date container */
 .overlay__location-date-container {
   height: 10%;
   display: flex;
@@ -441,6 +446,7 @@ button:focus {
   font-weight: bold;
 }
 
+/* Overlay footer */
 .overlay__footer {
   height: 20%;
   display: flex;
@@ -449,6 +455,7 @@ button:focus {
   margin-bottom: 1rem;
 }
 
+/* Overlay title */
 .overlay__title {
   font-size: 4rem;
   font-weight: bold;
@@ -456,22 +463,26 @@ button:focus {
   padding: 0 4rem;
 }
 
+/* Overlay seprator for date and location */
 .overlay__separator {
   padding: 0 1rem;
 }
 
+/* Overlay content text */
 .event__text {
   text-align: justify;
   font-size: 1.6rem;
   line-height: 2.8rem;
 }
 
+/* Overlay location and date container */
 .overlay__location-date-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Overlay reg button */
 .overlay__registration-button {
   text-transform: uppercase;
   text-decoration: none;
@@ -486,11 +497,13 @@ button:focus {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.25);
 }
 
+/* Overlay reg button hover */
 .overlay__registration-button:hover {
   box-shadow: 0 8px 18px rgba(0,0,0,0.15), 0 5px 5px rgba(0,0,0,0.23);
   transform: translateY(-3px);
 }
 
+/* Overlay reg button hover */
 .overlay__registration-button--mission {
   background-image: linear-gradient(to right,#ff7b37 0%,#FFBA36 58%,#ff7b37 100%);
 }

@@ -58,7 +58,9 @@ const icons =
 
 let events = [];
 let overlayStatus = false;
-const overlay = document.getElementById('overlay');
+const overlayEventDetails = document.getElementById('overlay-details');
+const overlayPremiumSignup = document.getElementById('overlay-premium');
+const overlayContainer = document.getElementById('overlay-container');
 const eventsListHackathon = document.querySelector("#events-list__hackathon");
 const eventsListLeap = document.querySelector("#events-list__leap");
 const eventsListMission = document.querySelector("#events-list__mission");
@@ -256,7 +258,11 @@ function createEventFooter(event) {
     `events__item-details-button--${event.type}`
   );
   eventDetailsButton.setAttribute("type", "button")
-  eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
+  if (event.premium) {
+    eventDetailsButton.addEventListener('click', showPremiumSignup.bind(null, event))
+  } else {
+    eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
+  }
   eventDetailsButton.appendChild(document.createTextNode("Details"));
 
   eventDetails.appendChild(eventDetailsButton);
@@ -300,12 +306,26 @@ function createEventSVG(event) {
   return svg;
 }
 
+function createEventOverlay(event) {
+
+}
+
 function showEventDetails(event) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
-    overlay.style.display = "flex";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
+    overlayEventDetails.style.display = "flex";
+    overlayEventDetails.style.alignItems = "center";
+    overlayEventDetails.style.justifyContent = "center";
+  } 
+  console.log('clicked on event button', JSON.stringify(event, null, 2))
+}
+
+function showPremiumSignup(event) {
+  overlayStatus = !overlayStatus;
+  if (overlayStatus) {
+    overlayPremiumSignup.style.display = "flex";
+    overlayPremiumSignup.style.alignItems = "center";
+    overlayPremiumSignup.style.justifyContent = "center";
   } 
   console.log('clicked on event button', JSON.stringify(event, null, 2))
 }
@@ -316,8 +336,11 @@ function showEventDetails(event) {
  * @param {Event} event DOM event
  */
 window.onclick = function(event) {
-  if (event.target == overlay) {
-    overlay.style.display = "none";
+  if (event.target == overlayEventDetails) {
+    overlayEventDetails.style.display = "none";
+    overlayStatus = !overlayStatus;
+  } else if (event.target == overlayPremiumSignup) {
+    overlayPremiumSignup.style.display = "none";
     overlayStatus = !overlayStatus;
   }
 }
