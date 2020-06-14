@@ -57,6 +57,7 @@ const icons =
 
 
 let events = [];
+let user = {};
 let overlayStatus = false;
 const overlayEventDetails = document.getElementById('overlay-details');
 const overlayPremiumSignup = document.getElementById('overlay-premium');
@@ -84,6 +85,13 @@ function init() {
   events.forEach(function (event) {
     createEventItem(event);
   });
+  user = {
+    name: "Test User",
+    registeredEvents: []
+  }
+
+  window.localStorage.setItem('user', JSON.stringify(user))
+  window.localStorage.setItem('events', JSON.stringify(events))
 }
 
 /**
@@ -255,14 +263,21 @@ function createEventFooter(event) {
     "events__item-twitter",
     `events__item-icon-gradient--${event.type}`
   );
+  eventSocialMedia.id = 'twitter-button'
 
   const svg = createEventSVG(event)
 
   const icon = document.createElement("i");
   icon.classList.add("fab", "fa-twitter", `fa-${event.icon.lg}`);
 
+  const tweet = `Checkout @VanHack's '${event.title}' event on ${event.date}, located in ${event.location}!`
+  const twitterAnchor = document.createElement("a")
+  twitterAnchor.setAttribute("href", `https://twitter.com/intent/tweet?text=${tweet}`)
+
+  
   eventSocialMedia.appendChild(svg);
   eventSocialMedia.appendChild(icon);
+  twitterAnchor.appendChild(eventSocialMedia)
 
   const eventDetails = document.createElement("div");
   eventDetails.setAttribute("class", "events__item-details");
@@ -284,7 +299,7 @@ function createEventFooter(event) {
 
   eventDetails.appendChild(eventDetailsButton);
 
-  eventFooter.appendChild(eventSocialMedia);
+  eventFooter.appendChild(twitterAnchor);
   eventFooter.appendChild(eventDetails);
 
   return eventFooter;
@@ -323,6 +338,11 @@ function createEventSVG(event) {
   return svg;
 }
 
+/**
+ * Display overlay on event click
+ * @param {Object} event Event data object
+ * @param {String} overlayType Premium or Regular overlay
+ */
 function createEventOverlay(event, overlayType) {
   const className = "overlay__header-border";
 
@@ -444,7 +464,8 @@ function createEventOverlayFooter(event) {
   if (event.premium) {
     registrationButton.addEventListener('click', redirectRegistration.bind(null))
   } else {
-    registrationButton.addEventListener('click', registerUserForEvent.bind(null, event))
+    registrationButton.addEventListener('click', registerUserForEvent.bind(null, event.title))
+    registrationButton.id = "overlay__registration-button"
   }
 
   const registerButtonText = event.premium ? "Get Premium" : "Register Now!"
@@ -454,6 +475,10 @@ function createEventOverlayFooter(event) {
   return footer;
 }
 
+/**
+ * Display an overlay with event details
+ * @param {Object} event Event data object
+ */
 function showEventDetails(event) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
@@ -462,9 +487,12 @@ function showEventDetails(event) {
     overlayEventDetails.style.alignItems = "center";
     overlayEventDetails.style.justifyContent = "center";
   } 
-  console.log('clicked on event button', JSON.stringify(event, null, 2))
 }
 
+/**
+ * Display an overlay with sign up details
+ * @param {Object} event Event data object
+ */
 function showPremiumSignup(event) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
@@ -473,20 +501,51 @@ function showPremiumSignup(event) {
     overlayPremiumSignup.style.alignItems = "center";
     overlayPremiumSignup.style.justifyContent = "center";
   } 
-  console.log('clicked on event button', JSON.stringify(event, null, 2))
 }
 
-function registerUserForEvent(event) {
-  console.log('clicked register for event', JSON.stringify(event, null, 2))
+/**
+ * Rester user for event by adding the event into user's events array
+ * @param {Object} event Event data object
+ */
+function registerUserForEvent(eventTitle) {
+  console.log('eventTitle', eventTitle)
+  // check if user already registered for it
+  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
+  const stateUser = JSON.parse(window.localStorage.getItem('user'))
+  const alreadyRegistered = stateUser.registeredEvents.some(stateUserEvent => stateUserEvent.title === eventTitle)
+  console.log('alreadyRegistered', alreadyRegistered)
+  if (!alreadyRegistered) {
+
+    const registrationButton = document.getElementById("overlay__registration-button")
+
+    let registeredEvent;
+    stateEvents.filter(e => {
+      if (e.title === eventTitle) {
+        e.status = 'registered';
+        registeredEvent = e;
+        console.log('updated event status', JSON.stringify(e, null, 2))
+      }
+    })
+
+    stateUser.registeredEvents.push(registeredEvent)
+    console.log('stateUser.registeredEvents', stateUser.registeredEvents)
+    registrationButton.disabled = true;
+    registrationButton.setAttribute('hover', )
+
+  }
 }
 
+/**
+ * Redirect user to vanhack's premium page
+ */
 function redirectRegistration() {
   console.log('redicrecting to registration page')
+  window.open("https://vanhack.com/premium")
 }
 
 
 /**
- * Some function to keep track of window global events
+ * Close overlays and remove overlay children from DOM
  * @param {Event} event DOM event
  */
 window.onclick = function(event) {
@@ -515,6 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "June 26, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "Vancouver, BC",
           type: "hackathon",
           color: {
@@ -536,6 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "June 30, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "Toronto, ON",
           type: "leap",
           color: {
@@ -557,6 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "July 3, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "New York, NY",
           type: "mission",
           color: {
@@ -578,6 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "July 3, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "New York, NY",
           type: "mission",
           color: {
@@ -599,6 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "Aug 6, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "Vancouver, BC",
           type: "mission",
           color: {
@@ -620,6 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "Sept 15, 2020",
           position: "top",
           premium: false,
+          status: "unregistered",
           location: "Los Angeles, CA",
           type: "mission",
           color: {
@@ -641,6 +706,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "July 15, 2020",
           position: "bottom",
           premium: false,
+          status: "unregistered",
           location: "Seattle, WA",
           type: "meetup",
           color: {
@@ -662,6 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "July 12, 2020",
           position: "bottom",
           premium: false,
+          status: "unregistered",
           location: "Seattle, WA",
           type: "webinar--free",
           color: {
@@ -683,6 +750,7 @@ document.addEventListener('DOMContentLoaded', () => {
           date: "July 13, 2020",
           position: "bottom",
           premium: true,
+          status: "unregistered",
           location: "Seattle, WA",
           type: "webinar--premium",
           color: {
