@@ -123,7 +123,7 @@ function createEventItem(event) {
 }
 
 /**
- * Add elements into correct place into the DOM based on type
+ * Append event/overlay elements into the DOM
  * 
  * @param {String} type Event type
  * @param {XMLDocument } type eventElement 
@@ -284,16 +284,19 @@ function createEventFooter(event) {
 
   const buttonBorderColor = event.type.includes("webinar") ? "events__item-details-button--webinar--free" : `events__item-details-button--${event.type}`
   const eventDetailsButton = document.createElement("button");
+  eventDetailsButton.id = "events__item-details-button"
   eventDetailsButton.classList.add(
     "events__item-details-button",
     buttonBorderColor
   );
   eventDetailsButton.setAttribute("type", "button")
 
+  // show warning message if user clicks on premium event
   if (event.premium) {
-    eventDetailsButton.addEventListener('click', showPremiumSignup.bind(null, event))
+    eventDetailsButton.addEventListener('click', insertOverlayIntoDOM.bind(null, event, overlayPremiumSignup, 'overlay-premium-warning'))
   } else {
-    eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
+    // otherwise show event details
+    eventDetailsButton.addEventListener('click', insertOverlayIntoDOM.bind(null, event, overlayEventDetails, 'overlay-event-details'))
   }
   eventDetailsButton.appendChild(document.createTextNode("Details"));
 
@@ -491,30 +494,28 @@ function createEventOverlayFooter(event) {
 }
 
 /**
- * Display an overlay with event details
- * @param {Object} event Event data object
+ * Remove specified overlay from the DOM and switch overlay status to closed
+ * @param {String} element Element's class name
  */
-function showEventDetails(event) {
+function removeOverlayFromDOM(element) {
+  element.style.display = "none";
+  element.removeChild(element.firstElementChild)
   overlayStatus = !overlayStatus;
-  if (overlayStatus) {
-    createEventOverlay(event, 'overlay-event-details')
-    overlayEventDetails.style.display = "flex";
-    overlayEventDetails.style.alignItems = "center";
-    overlayEventDetails.style.justifyContent = "center";
-  } 
 }
 
 /**
- * Display an overlay with sign up details
- * @param {Object} event Event data object
+ * Insert and display overlay in the DOM
+ * @param {Object} event Event data object    
+ * @param {String} element Event Parent class name
+ * @param {String} className Event class name
  */
-function showPremiumSignup(event) {
+function insertOverlayIntoDOM(event, element, className) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
-    createEventOverlay(event, 'overlay-premium-warning')
-    overlayPremiumSignup.style.display = "flex";
-    overlayPremiumSignup.style.alignItems = "center";
-    overlayPremiumSignup.style.justifyContent = "center";
+    createEventOverlay(event, className)
+    element.style.display = "flex";
+    element.style.alignItems = "center";
+    element.style.justifyContent = "center";
   } 
 }
 
@@ -564,20 +565,29 @@ function redirectRegistration() {
 
 
 /**
- * Close overlays and remove overlay children from DOM
+ * Close overlays and remove overlay children from DOM when clicking outside of the overlay-container
  * @param {Event} event DOM event
  */
 window.onclick = function(event) {
   if (event.target == overlayEventDetails) {
-    overlayEventDetails.style.display = "none";
-    overlayEventDetails.removeChild(overlayEventDetails.firstElementChild)
-    overlayStatus = !overlayStatus;
+    removeOverlayFromDOM(overlayEventDetails)
   } else if (event.target == overlayPremiumSignup) {
-    overlayPremiumSignup.style.display = "none";
-    overlayPremiumSignup.removeChild(overlayPremiumSignup.firstElementChild)
-    overlayStatus = !overlayStatus;
+    removeOverlayFromDOM(overlayPremiumSignup)
   }
 }
+
+/**
+ * Close overlays and remove overlay children from DOM when clicking the ESC key
+ * @param {Event} event DOM event
+ */
+window.onkeydown = function( event ) {
+  if (event.keyCode == 27 && overlayEventDetails.style.display == "flex") {
+    removeOverlayFromDOM(overlayEventDetails)
+  } else if (event.keyCode == 27 && overlayPremiumSignup.style.display == "flex") {
+    removeOverlayFromDOM(overlayPremiumSignup)
+  }
+};
+
 
 /**
  * Setup event listeners when application is loading to prevent

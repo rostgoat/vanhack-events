@@ -12,7 +12,6 @@ html {
 
 body {
   box-sizing: border-box;
-  padding: 3rem;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   line-height: 1.7;
@@ -28,8 +27,15 @@ button:focus {
   outline:none !important;
 }
 
+main {
+  padding: 3rem;
+}
 
-
+@media only screen and (max-width: 768px) {
+  main {
+    padding: 0;
+  }
+}
 /* Header */
 .header {
   display: flex;
@@ -39,11 +45,23 @@ button:focus {
   background-color: #0675ce;
 }
 
+@media only screen and (max-width: 768px) {
+  .header {
+    margin-top: 1rem;
+  }
+}
+
 .header-title {
   font-size: 6rem;
   text-transform: uppercase;
   font-weight: bold;
   color: white;
+}
+
+@media only screen and (max-width: 768px) {
+  .header-title {
+    font-size: 2rem;
+  }
 }
 
 /* Events Container */
@@ -81,8 +99,27 @@ button:focus {
 .events__item--top {
   width: 30%;
 }
+
+@media only screen and (max-width: 768px) {
+  .events__item--top {
+    width: 100%;
+  }
+}
+
 .events__item--bottom {
   width: 20%;
+}
+
+@media only screen and (max-width: 900px) {
+  .events__item--bottom {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .events__item--bottom {
+    width: 100%;
+  }
 }
 
 .events__item:hover {
@@ -424,6 +461,13 @@ button:focus {
   animation: overlay-animation .5s ease;
 }
 
+@media only screen and (max-width: 768px) {
+  .overlay-container {
+    width: 85%;
+    height: 85%;
+  }
+}
+
 /* Overlay Container Animation on enter */
 @keyframes overlay-animation {
   0%   { 
@@ -446,9 +490,21 @@ button:focus {
   margin-top: 3rem;
 }
 
+@media only screen and (max-width: 768px) {
+  .overlay__header {
+    margin-top: 0;
+  }
+}
+
 /* Overlay border */
 .overlay__header-border {
   height: 2%;
+}
+
+@media only screen and (max-width: 768px) {
+  .overlay__header-border {
+    height: 1%;
+  }
 }
 
 .overlay__content {
@@ -457,6 +513,13 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .overlay__content {
+    margin: 2rem 1rem;
+    padding: 0;
+  }
 }
 
 /* Overlay location and date container */
@@ -485,6 +548,12 @@ button:focus {
   font-weight: bold;
   text-align: center;
   padding: 0 4rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .overlay__title {
+    font-size: 2rem;
+  }
 }
 
 /* Overlay seprator for date and location */
