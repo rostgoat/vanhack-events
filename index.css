@@ -217,7 +217,15 @@ button:focus {
     linear-gradient(101deg, rgba(255, 123, 55, 1), rgba(255, 186, 54, 1));
 }
 
-.events__item-details-button--webinar--free .events__item-details-button--webinar--premium {
+.events__item-details-button--webinar--free {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(101deg, rgba(113, 6, 206, 1), rgba(186, 156, 156, 1));
+}
+
+.events__item-details-button--webinar--premium {
   background-image: linear-gradient(
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 0)
@@ -342,6 +350,22 @@ button:focus {
       rgba(178, 206, 6, 1) 75%
     )
     left bottom no-repeat;
+}
+
+.lg--danger {
+  background: linear-gradient(
+      59deg,
+       rgba(200,33,33,1) 21%,
+       rgba(255,149,149,1) 100%
+       )
+    left bottom no-repeat;
+
+  background: -webkit-linear-gradient(
+    59deg,
+     rgba(200,33,33,1) 21%,
+     rgba(255,149,149,1) 100%
+     )
+  left bottom no-repeat;
 }
 
 /* Icon HTML Gradient for FA SVG */
@@ -504,9 +528,28 @@ button:focus {
 }
 
 /* Overlay reg button hover */
-.overlay__registration-button--mission {
-  background-image: linear-gradient(to right,#ff7b37 0%,#FFBA36 58%,#ff7b37 100%);
+.overlay__registration-button--hackathon {
+  background-image: linear-gradient(to right,rgba(6, 117, 206, 1) 0%,rgba(37, 193, 203, 1) 58%,rgba(6, 117, 206, 1) 100%);
 }
+.overlay__registration-button--leap {
+  background-image: linear-gradient(to right,rgba(101, 222, 43, 1) 0%,rgba(177, 207, 83, 1) 58%,rgba(101, 222, 43, 1) 100%);
+}
+.overlay__registration-button--mission {
+  background-image: linear-gradient(to right,rgba(255, 123, 55, 1) 0%,rgba(255, 186, 54, 1) 58%,rgba(255, 123, 55, 1) 100%);
+}
+.overlay__registration-button--webinar--free {
+  background-image: linear-gradient(to right,rgba(113, 6, 206, 1) 0%,rgba(186, 156, 156, 1) 58%,rgba(113, 6, 206, 1) 100%);
+}
+.overlay__registration-button--webinar--premium {
+  background-image: linear-gradient(to right,rgba(113, 6, 206, 1) 0%,rgba(186, 156, 156, 1) 58%,rgba(113, 6, 206, 1) 100%);
+}
+.overlay__registration-button--meetup {
+  background-image: linear-gradient(to right,rgba(134, 161, 241, 1) 0%,rgba(178, 206, 6, 1) 58%,rgba(134, 161, 241, 1) 100%);
+}
+.overlay__registration-button--danger {
+  background-image: linear-gradient(to right,rgba(200,33,33,1) 0%,rgba(255,149,149,1) 58%,rgba(200,33,33,1) 100%);
+}     
+
 .overlay__registration-button--mission:active {
   background-position: right center;
 }

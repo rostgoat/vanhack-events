@@ -102,7 +102,7 @@ function createEventItem(event) {
   }
 
   const header = createEventHeader(event);
-  const border = createBorder(className, event);
+  const border = createBorder(className, event, false);
   const content = createEventContent(event);
   const footer = createEventFooter(event);
 
@@ -178,11 +178,15 @@ function createEventHeader(event) {
 }
 
 /**
- * Create Event Border
+ * Create colorful border for box elements
+ * @param {String} className css classname
+ * @param {Object} event Event to render
+ * @param {Boolean} customColor flag for custom color
  */
-function createBorder(className, event) {
+function createBorder(className, event, customColor) {
+  const borderColor = event.type === "webinar--premium" && customColor ? `lg--danger` : `lg--${event.type}`
   const eventBorder = document.createElement("div");
-  eventBorder.classList.add(className, `lg--${event.type}`);
+  eventBorder.classList.add(className, borderColor);
 
   return eventBorder;
 }
@@ -263,17 +267,17 @@ function createEventFooter(event) {
   const eventDetails = document.createElement("div");
   eventDetails.setAttribute("class", "events__item-details");
 
+  const buttonBorderColor = event.type.includes("webinar") ? "events__item-details-button--webinar--free" : `events__item-details-button--${event.type}`
   const eventDetailsButton = document.createElement("button");
   eventDetailsButton.classList.add(
     "events__item-details-button",
-    `events__item-details-button--${event.type}`
+    buttonBorderColor
   );
   eventDetailsButton.setAttribute("type", "button")
+
   if (event.premium) {
-    console.log('creating showPremiumSignup')
     eventDetailsButton.addEventListener('click', showPremiumSignup.bind(null, event))
   } else {
-    console.log('creating showEventDetails')
     eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
   }
   eventDetailsButton.appendChild(document.createTextNode("Details"));
@@ -326,14 +330,17 @@ function createEventOverlay(event, overlayType) {
   overlayElementContainer.setAttribute('class', 'overlay-container')
   overlayElementContainer.id = 'overlay-container'
 
+  let locationAndDate;
+  if (event.type !== "webinar--premium") locationAndDate = createOverlayLocationDate(event) 
   const header = createEventOverlayHeader(event)
-  const border = createBorder(className, event)
+  const border = createBorder(className, event, true)
   const content = createEventOverlayContent(event)
   const footer = createEventOverlayFooter(event)
 
   overlayElementContainer.appendChild(header)
   overlayElementContainer.appendChild(border)
   overlayElementContainer.appendChild(content)
+  if (!!locationAndDate) overlayElementContainer.appendChild(locationAndDate)
   overlayElementContainer.appendChild(footer)
 
   addEventIntoDOM(overlayType, overlayElementContainer)
@@ -384,11 +391,47 @@ function createEventOverlayContent(event) {
 }
 
 /**
+ * Create date and location container
+ * @param {Object} event Event data object
+ */
+function createOverlayLocationDate(event) {
+  const locationAndDateContainer = document.createElement('div');
+  locationAndDateContainer.setAttribute('class', 'overlay__location-date-container')
+
+  const location = document.createElement('div');
+  location.setAttribute('class', 'overlay__location')
+  location.appendChild(document.createTextNode(`${event.location}`))
+
+  const separator = document.createElement('div');
+  separator.setAttribute('class', 'overlay__separator')
+  separator.appendChild(document.createTextNode(" - "))
+  
+  const date = document.createElement('div');
+  date.setAttribute('class', 'overlay__date')
+  date.appendChild(document.createTextNode(`${event.date}`))
+
+  locationAndDateContainer.appendChild(location)
+  locationAndDateContainer.appendChild(separator)
+  locationAndDateContainer.appendChild(date)
+
+  return locationAndDateContainer
+}
+
+/**
  * Create overlay footer
  * @param {Object} event Event data object
  */
 function createEventOverlayFooter(event) {
-  const buttonColor = event.type.includes('webinar') ? `overlay__registration-button--webinar--premium` : `overlay__registration-button--${event.type}`
+  let buttonColor;
+
+  if (event.type === 'webinar--free') {
+    buttonColor = `overlay__registration-button--webinar--free`;
+  } else if (event.type === 'webinar--premium') {
+    buttonColor = `overlay__registration-button--danger`
+  } else {
+    buttonColor = `overlay__registration-button--${event.type}`
+  }
+
   const footer = document.createElement('div');
   footer.setAttribute('class', 'overlay__footer')
 
