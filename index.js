@@ -67,6 +67,14 @@ const eventsListMission = document.querySelector("#events-list__mission");
 const eventsListWebinarFree = document.querySelector("#events-list__webinar--free");
 const eventsListWebinarPremium = document.querySelector("#events-list__webinar--premium");
 const eventsListMeetup = document.querySelector("#events-list__meetup");
+const overlayPremiumWarningTitle = `
+Uh-Oh..You Need Premium to Register for this Event!
+`
+const overlayPremiumWarningContent = `
+VanHack Premium is pretty sweet. You get so many cool features,
+          including access to this event! Sign up now for only $9.99 a month!
+`
+
 
 
 /**
@@ -85,6 +93,7 @@ function init() {
 function createEventItem(event) {
   const eventItem = document.createElement("div");
   const type = event.type;
+  const className = "events__item-header-border";
 
   if (type === 'hackathon' || type === 'leap' || type === 'mission') {
     eventItem.classList.add("events__item", "events__item--top");
@@ -93,7 +102,7 @@ function createEventItem(event) {
   }
 
   const header = createEventHeader(event);
-  const border = createEventBorder(event);
+  const border = createBorder(className, event);
   const content = createEventContent(event);
   const footer = createEventFooter(event);
 
@@ -125,6 +134,10 @@ function addEventIntoDOM(type, eventElement) {
       return eventsListWebinarPremium.appendChild(eventElement);
     case 'meetup':
       return eventsListMeetup.appendChild(eventElement);
+    case 'overlay-event-details':
+      return overlayEventDetails.appendChild(eventElement);
+    case 'overlay-premium-warning':
+      return overlayPremiumSignup.appendChild(eventElement);
     default:
       return;
   }
@@ -164,14 +177,12 @@ function createEventHeader(event) {
   return eventItemHeader;
 }
 
-
-
 /**
  * Create Event Border
  */
-function createEventBorder(event) {
+function createBorder(className, event) {
   const eventBorder = document.createElement("div");
-  eventBorder.classList.add("events__item-header-border", `lg--${event.type}`);
+  eventBorder.classList.add(className, `lg--${event.type}`);
 
   return eventBorder;
 }
@@ -259,8 +270,10 @@ function createEventFooter(event) {
   );
   eventDetailsButton.setAttribute("type", "button")
   if (event.premium) {
+    console.log('creating showPremiumSignup')
     eventDetailsButton.addEventListener('click', showPremiumSignup.bind(null, event))
   } else {
+    console.log('creating showEventDetails')
     eventDetailsButton.addEventListener('click', showEventDetails.bind(null, event))
   }
   eventDetailsButton.appendChild(document.createTextNode("Details"));
@@ -306,13 +319,102 @@ function createEventSVG(event) {
   return svg;
 }
 
-function createEventOverlay(event) {
+function createEventOverlay(event, overlayType) {
+  const className = "overlay__header-border";
 
+  const overlayElementContainer = document.createElement('div');
+  overlayElementContainer.setAttribute('class', 'overlay-container')
+  overlayElementContainer.id = 'overlay-container'
+
+  const header = createEventOverlayHeader(event)
+  const border = createBorder(className, event)
+  const content = createEventOverlayContent(event)
+  const footer = createEventOverlayFooter(event)
+
+  overlayElementContainer.appendChild(header)
+  overlayElementContainer.appendChild(border)
+  overlayElementContainer.appendChild(content)
+  overlayElementContainer.appendChild(footer)
+
+  addEventIntoDOM(overlayType, overlayElementContainer)
+}
+
+/**
+ * Create overlay header
+ * @param {Object} event Event data object
+ */
+function createEventOverlayHeader(event) {
+  const header = document.createElement('div');
+  header.setAttribute('class', 'overlay__header')
+
+  const title = document.createElement('div');
+  title.setAttribute('class', 'overlay__title')
+  if (event.premium) {
+    overlayPremiumWarningTitle
+    title.appendChild(document.createTextNode(overlayPremiumWarningTitle))
+  } else {
+    title.appendChild(document.createTextNode(`${event.title}`))
+  }
+  
+  header.appendChild(title)
+
+  return header;
+}
+
+/**
+ * Create overlay content
+ * @param {Object} event Event data object
+ */
+function createEventOverlayContent(event) {
+  const content = document.createElement('div');
+  content.setAttribute('class', 'overlay__content')
+
+  const paragraph = document.createElement('div');
+  paragraph.setAttribute('class', 'event__text')
+  if (event.premium) {
+    overlayPremiumWarningTitle
+    paragraph.appendChild(document.createTextNode(overlayPremiumWarningContent))
+  } else {
+    paragraph.appendChild(document.createTextNode(`${event.content}`))
+  }
+
+  content.appendChild(paragraph)
+
+  return content;
+}
+
+/**
+ * Create overlay footer
+ * @param {Object} event Event data object
+ */
+function createEventOverlayFooter(event) {
+  const buttonColor = event.type.includes('webinar') ? `overlay__registration-button--webinar--premium` : `overlay__registration-button--${event.type}`
+  const footer = document.createElement('div');
+  footer.setAttribute('class', 'overlay__footer')
+
+  const registrationButton = document.createElement("button");
+  registrationButton.classList.add(
+    "overlay__registration-button",
+    buttonColor
+  );
+  registrationButton.setAttribute("type", "button")
+  if (event.premium) {
+    registrationButton.addEventListener('click', redirectRegistration.bind(null))
+  } else {
+    registrationButton.addEventListener('click', registerUserForEvent.bind(null, event))
+  }
+
+  const registerButtonText = event.premium ? "Get Premium" : "Register Now!"
+  
+  registrationButton.appendChild(document.createTextNode(registerButtonText));
+  footer.appendChild(registrationButton)
+  return footer;
 }
 
 function showEventDetails(event) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
+    createEventOverlay(event, 'overlay-event-details')
     overlayEventDetails.style.display = "flex";
     overlayEventDetails.style.alignItems = "center";
     overlayEventDetails.style.justifyContent = "center";
@@ -323,11 +425,20 @@ function showEventDetails(event) {
 function showPremiumSignup(event) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
+    createEventOverlay(event, 'overlay-premium-warning')
     overlayPremiumSignup.style.display = "flex";
     overlayPremiumSignup.style.alignItems = "center";
     overlayPremiumSignup.style.justifyContent = "center";
   } 
   console.log('clicked on event button', JSON.stringify(event, null, 2))
+}
+
+function registerUserForEvent(event) {
+  console.log('clicked register for event', JSON.stringify(event, null, 2))
+}
+
+function redirectRegistration() {
+  console.log('redicrecting to registration page')
 }
 
 
@@ -338,9 +449,11 @@ function showPremiumSignup(event) {
 window.onclick = function(event) {
   if (event.target == overlayEventDetails) {
     overlayEventDetails.style.display = "none";
+    overlayEventDetails.removeChild(overlayEventDetails.firstElementChild)
     overlayStatus = !overlayStatus;
   } else if (event.target == overlayPremiumSignup) {
     overlayPremiumSignup.style.display = "none";
+    overlayPremiumSignup.removeChild(overlayPremiumSignup.firstElementChild)
     overlayStatus = !overlayStatus;
   }
 }
@@ -367,7 +480,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.hackathon,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 1,
@@ -383,7 +501,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.leap,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 2,
@@ -399,7 +522,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.mission,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 3,
@@ -415,7 +543,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.mission,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 4,
@@ -431,7 +564,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.mission,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 5,
@@ -447,7 +585,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.mission,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 6,
@@ -463,7 +606,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.meetup,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 7,
@@ -479,7 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           icon: icons.webinar,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
           id: 8,
@@ -496,7 +649,12 @@ document.addEventListener('DOMContentLoaded', () => {
           icon: icons.webinar,
           premiumIcon: icons.premium,
           content:
-            ``,
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         
       ];
