@@ -82,7 +82,8 @@ VanHack Premium is pretty sweet. You get so many cool features,
  * Initialize all the data at the start of the application
  */
 function init() {
-  events.forEach(function (event) {
+  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
+  stateEvents.forEach(function (event) {
     createEventItem(event);
   });
   user = {
@@ -91,7 +92,6 @@ function init() {
   }
 
   window.localStorage.setItem('user', JSON.stringify(user))
-  window.localStorage.setItem('events', JSON.stringify(events))
 }
 
 /**
@@ -468,7 +468,19 @@ function createEventOverlayFooter(event) {
     registrationButton.id = "overlay__registration-button"
   }
 
-  const registerButtonText = event.premium ? "Get Premium" : "Register Now!"
+  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
+  console.log('stateEvents', stateEvents)
+  const stateEvent = stateEvents.filter(e => e.title === event.title)
+  console.log('stateEvent', stateEvent)
+  console.log('stateEvent[0].status', stateEvent[0].status)
+
+  if (event.premium) {
+    registerButtonText = "Get Premium"
+  } else if (stateEvent[0].status === "unregistered") {
+    registerButtonText = "Register Now!"
+  } else {
+    registerButtonText = "Registered"
+  }
   
   registrationButton.appendChild(document.createTextNode(registerButtonText));
   footer.appendChild(registrationButton)
@@ -504,34 +516,39 @@ function showPremiumSignup(event) {
 }
 
 /**
- * Rester user for event by adding the event into user's events array
+ * Register user for event. Events are stored in localstorage along with user data.
+ * When user registers for an event, that state event status is switched to register
+ * and an event entry is added to a user's registeredEvent array
  * @param {Object} event Event data object
  */
 function registerUserForEvent(eventTitle) {
-  console.log('eventTitle', eventTitle)
-  // check if user already registered for it
+  // get state events
   const stateEvents = JSON.parse(window.localStorage.getItem('events'))
+  // get user from state
   const stateUser = JSON.parse(window.localStorage.getItem('user'))
+  // check to see if user already registered for the event
   const alreadyRegistered = stateUser.registeredEvents.some(stateUserEvent => stateUserEvent.title === eventTitle)
-  console.log('alreadyRegistered', alreadyRegistered)
+  // if user hasn't registered yet
   if (!alreadyRegistered) {
-
     const registrationButton = document.getElementById("overlay__registration-button")
 
+    // change event status to regiestered
     let registeredEvent;
     stateEvents.filter(e => {
       if (e.title === eventTitle) {
         e.status = 'registered';
         registeredEvent = e;
-        console.log('updated event status', JSON.stringify(e, null, 2))
       }
     })
 
+    // update event items in state
+    window.localStorage.setItem('events', JSON.stringify(stateEvents))
+    // add event to user's registered events array
     stateUser.registeredEvents.push(registeredEvent)
-    console.log('stateUser.registeredEvents', stateUser.registeredEvents)
+    // disable reg button for the event for the user
     registrationButton.disabled = true;
-    registrationButton.setAttribute('hover', )
-
+    // change button text
+    registrationButton.innerHTML = "Registered!"
   }
 }
 
@@ -769,6 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         
       ];
+      window.localStorage.setItem('events', JSON.stringify(events))
+
     } else {
       window.setTimeout(loadData, 250);
       window.setTimeout(init, 250);
