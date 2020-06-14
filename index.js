@@ -398,8 +398,9 @@ function createEventOverlayContent(event) {
 
   const paragraph = document.createElement('div');
   paragraph.setAttribute('class', 'event__text')
+
+  // if the event is a premium webinar, show warning, else show event content
   if (event.premium) {
-    overlayPremiumWarningTitle
     paragraph.appendChild(document.createTextNode(overlayPremiumWarningContent))
   } else {
     paragraph.appendChild(document.createTextNode(`${event.content}`))
@@ -444,6 +445,7 @@ function createOverlayLocationDate(event) {
 function createEventOverlayFooter(event) {
   let buttonColor;
 
+  // change button border color based on event state
   if (event.type === 'webinar--free') {
     buttonColor = `overlay__registration-button--webinar--free`;
   } else if (event.type === 'webinar--premium') {
@@ -461,6 +463,8 @@ function createEventOverlayFooter(event) {
     buttonColor
   );
   registrationButton.setAttribute("type", "button")
+
+  // depending on if the event is a premium webinar or not, fire different click events
   if (event.premium) {
     registrationButton.addEventListener('click', redirectRegistration.bind(null))
   } else {
@@ -468,12 +472,11 @@ function createEventOverlayFooter(event) {
     registrationButton.id = "overlay__registration-button"
   }
 
+  // get data from state to verify if event has been registered for by this user
   const stateEvents = JSON.parse(window.localStorage.getItem('events'))
-  console.log('stateEvents', stateEvents)
   const stateEvent = stateEvents.filter(e => e.title === event.title)
-  console.log('stateEvent', stateEvent)
-  console.log('stateEvent[0].status', stateEvent[0].status)
 
+  // change button text based on if event is premium webinar and on user's registration status
   if (event.premium) {
     registerButtonText = "Get Premium"
   } else if (stateEvent[0].status === "unregistered") {
@@ -556,7 +559,6 @@ function registerUserForEvent(eventTitle) {
  * Redirect user to vanhack's premium page
  */
 function redirectRegistration() {
-  console.log('redicrecting to registration page')
   window.open("https://vanhack.com/premium")
 }
 
@@ -583,6 +585,7 @@ window.onclick = function(event) {
  */
 document.addEventListener('DOMContentLoaded', () => {
   const loadData = () => {
+    // wait for colors to load before creating events and assigning them into state
     if (typeof colors !== 'undefined') {
       events = [
         {
@@ -789,6 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.localStorage.setItem('events', JSON.stringify(events))
 
     } else {
+      // keep reloading function until DOM renders
       window.setTimeout(loadData, 250);
       window.setTimeout(init, 250);
     }
