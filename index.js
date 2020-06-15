@@ -1,5 +1,4 @@
-const colors =
-{
+const colors = {
   hackathon: {
     start: "#0675ce",
     end: "#25c1cb",
@@ -19,79 +18,71 @@ const colors =
   meetup: {
     start: "#86a1f1",
     end: "#b2ce06",
-  }
-}
+  },
+};
 
-const icons =
-{
+const icons = {
   hackathon: {
     icon: "fa-laptop-code",
     lg: "lg",
-    twoX: "2x"
+    twoX: "2x",
   },
   leap: {
     icon: "fa-frog",
     lg: "lg",
-    twoX: "2x"
+    twoX: "2x",
   },
   mission: {
     icon: "fa-rocket",
     lg: "lg",
-    twoX: "2x"
+    twoX: "2x",
   },
   webinar: {
     icon: "fa-user-friends",
     lg: "lg",
-    twoX: "2x"
+    twoX: "2x",
   },
   meetup: {
     icon: "fa-handshake",
     lg: "lg",
-    twoX: "2x"
+    twoX: "2x",
   },
   premium: {
     icon: "fa-gem",
-    sm: "sm"
-  }
-}
-
+    sm: "sm",
+  },
+};
 
 let events = [];
-let user = {};
 let overlayStatus = false;
-const overlayEventDetails = document.getElementById('overlay-details');
-const overlayPremiumSignup = document.getElementById('overlay-premium');
-const overlayContainer = document.getElementById('overlay-container');
+const overlayEventDetails = document.getElementById("overlay-details");
+const overlayPremiumSignup = document.getElementById("overlay-premium");
+const overlayContainer = document.getElementById("overlay-container");
 const eventsListHackathon = document.querySelector("#events-list__hackathon");
 const eventsListLeap = document.querySelector("#events-list__leap");
 const eventsListMission = document.querySelector("#events-list__mission");
-const eventsListWebinarFree = document.querySelector("#events-list__webinar--free");
-const eventsListWebinarPremium = document.querySelector("#events-list__webinar--premium");
+const eventsListWebinarFree = document.querySelector(
+  "#events-list__webinar--free"
+);
+const eventsListWebinarPremium = document.querySelector(
+  "#events-list__webinar--premium"
+);
 const eventsListMeetup = document.querySelector("#events-list__meetup");
 const overlayPremiumWarningTitle = `
 Uh-Oh..You Need Premium to Register for this Event!
-`
+`;
 const overlayPremiumWarningContent = `
 VanHack Premium is pretty sweet. You get so many cool features,
           including access to this event! Sign up now for only $9.99 a month!
-`
-
-
+`;
 
 /**
  * Initialize all the data at the start of the application
  */
 function init() {
-  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
-  stateEvents.forEach(function (event) {
+  events.forEach(function (event) {
     createEventItem(event);
   });
-  user = {
-    name: "Test User",
-    registeredEvents: []
-  }
-
-  window.localStorage.setItem('user', JSON.stringify(user))
 }
 
 /**
@@ -103,7 +94,7 @@ function createEventItem(event) {
   const type = event.type;
   const className = "events__item-header-border";
 
-  if (type === 'hackathon' || type === 'leap' || type === 'mission') {
+  if (type === "hackathon" || type === "leap" || type === "mission") {
     eventItem.classList.add("events__item", "events__item--top");
   } else {
     eventItem.classList.add("events__item", "events__item--bottom");
@@ -119,32 +110,32 @@ function createEventItem(event) {
   eventItem.appendChild(content);
   eventItem.appendChild(footer);
 
-  addEventIntoDOM(event.type, eventItem)
+  addEventIntoDOM(event.type, eventItem);
 }
 
 /**
  * Append event/overlay elements into the DOM
- * 
+ *
  * @param {String} type Event type
- * @param {XMLDocument } type eventElement 
+ * @param {XMLDocument } type eventElement
  */
 function addEventIntoDOM(type, eventElement) {
   switch (type) {
-    case 'hackathon':
+    case "hackathon":
       return eventsListHackathon.appendChild(eventElement);
-    case 'leap':
+    case "leap":
       return eventsListLeap.appendChild(eventElement);
-    case 'mission':
+    case "mission":
       return eventsListMission.appendChild(eventElement);
-    case 'webinar--free':
+    case "webinar--free":
       return eventsListWebinarFree.appendChild(eventElement);
-    case 'webinar--premium':
+    case "webinar--premium":
       return eventsListWebinarPremium.appendChild(eventElement);
-    case 'meetup':
+    case "meetup":
       return eventsListMeetup.appendChild(eventElement);
-    case 'overlay-event-details':
+    case "overlay-event-details":
       return overlayEventDetails.appendChild(eventElement);
-    case 'overlay-premium-warning':
+    case "overlay-premium-warning":
       return overlayPremiumSignup.appendChild(eventElement);
     default:
       return;
@@ -155,7 +146,6 @@ function addEventIntoDOM(type, eventElement) {
  * Create Event header
  */
 function createEventHeader(event) {
-
   const eventItemHeader = document.createElement("div");
   eventItemHeader.classList.add(
     "events__item-header",
@@ -192,7 +182,10 @@ function createEventHeader(event) {
  * @param {Boolean} customColor flag for custom color
  */
 function createBorder(className, event, customColor) {
-  const borderColor = event.type === "webinar--premium" && customColor ? `lg--danger` : `lg--${event.type}`
+  const borderColor =
+    event.type === "webinar--premium" && customColor
+      ? `lg--danger`
+      : `lg--${event.type}`;
   const eventBorder = document.createElement("div");
   eventBorder.classList.add(className, borderColor);
 
@@ -233,16 +226,20 @@ function createEventContent(event) {
   eventContentDataWrapper.appendChild(eventSeparator);
   eventContentDataWrapper.appendChild(eventLocation);
 
-  if (event.type.includes('webinar') && event.premium) {
+  if (event.type.includes("webinar") && event.premium) {
     const webinarPremiumSpan = document.createElement("span");
-    webinarPremiumSpan.setAttribute("class", "events__item-diamond")
-  
+    webinarPremiumSpan.setAttribute("class", "events__item-diamond");
+
     const premiumIcon = document.createElement("i");
-    premiumIcon.classList.add("fas", `${event.premiumIcon.icon}`, `fa-${event.premiumIcon.sm}`);
-    
-    webinarPremiumSpan.appendChild(premiumIcon)
+    premiumIcon.classList.add(
+      "fas",
+      `${event.premiumIcon.icon}`,
+      `fa-${event.premiumIcon.sm}`
+    );
+
+    webinarPremiumSpan.appendChild(premiumIcon);
     webinarPremiumSpan.appendChild(document.createTextNode(" Premium"));
-    eventContent.appendChild(webinarPremiumSpan)
+    eventContent.appendChild(webinarPremiumSpan);
   }
 
   eventContent.appendChild(eventContentTitle);
@@ -263,40 +260,60 @@ function createEventFooter(event) {
     "events__item-twitter",
     `events__item-icon-gradient--${event.type}`
   );
-  eventSocialMedia.id = 'twitter-button'
+  eventSocialMedia.id = "twitter-button";
 
-  const svg = createEventSVG(event)
+  const svg = createEventSVG(event);
 
   const icon = document.createElement("i");
   icon.classList.add("fab", "fa-twitter", `fa-${event.icon.lg}`);
 
-  const tweet = `Checkout @VanHack's '${event.title}' event on ${event.date}, located in ${event.location}!`
-  const twitterAnchor = document.createElement("a")
-  twitterAnchor.setAttribute("href", `https://twitter.com/intent/tweet?text=${tweet}`)
+  const tweet = `Checkout @VanHack's '${event.title}' event on ${event.date}, located in ${event.location}!`;
+  const twitterAnchor = document.createElement("a");
+  twitterAnchor.setAttribute(
+    "href",
+    `https://twitter.com/intent/tweet?text=${tweet}`
+  );
 
-  
   eventSocialMedia.appendChild(svg);
   eventSocialMedia.appendChild(icon);
-  twitterAnchor.appendChild(eventSocialMedia)
+  twitterAnchor.appendChild(eventSocialMedia);
 
   const eventDetails = document.createElement("div");
   eventDetails.setAttribute("class", "events__item-details");
 
-  const buttonBorderColor = event.type.includes("webinar") ? "events__item-details-button--webinar--free" : `events__item-details-button--${event.type}`
+  const buttonBorderColor = event.type.includes("webinar")
+    ? "events__item-details-button--webinar--free"
+    : `events__item-details-button--${event.type}`;
   const eventDetailsButton = document.createElement("button");
-  eventDetailsButton.id = "events__item-details-button"
+  eventDetailsButton.id = "events__item-details-button";
   eventDetailsButton.classList.add(
     "events__item-details-button",
     buttonBorderColor
   );
-  eventDetailsButton.setAttribute("type", "button")
+  eventDetailsButton.setAttribute("type", "button");
 
   // show warning message if user clicks on premium event
   if (event.premium) {
-    eventDetailsButton.addEventListener('click', insertOverlayIntoDOM.bind(null, event, overlayPremiumSignup, 'overlay-premium-warning'))
+    eventDetailsButton.addEventListener(
+      "click",
+      insertOverlayIntoDOM.bind(
+        null,
+        event,
+        overlayPremiumSignup,
+        "overlay-premium-warning"
+      )
+    );
   } else {
     // otherwise show event details
-    eventDetailsButton.addEventListener('click', insertOverlayIntoDOM.bind(null, event, overlayEventDetails, 'overlay-event-details'))
+    eventDetailsButton.addEventListener(
+      "click",
+      insertOverlayIntoDOM.bind(
+        null,
+        event,
+        overlayEventDetails,
+        "overlay-event-details"
+      )
+    );
   }
   eventDetailsButton.appendChild(document.createTextNode("Details"));
 
@@ -349,24 +366,25 @@ function createEventSVG(event) {
 function createEventOverlay(event, overlayType) {
   const className = "overlay__header-border";
 
-  const overlayElementContainer = document.createElement('div');
-  overlayElementContainer.setAttribute('class', 'overlay-container')
-  overlayElementContainer.id = 'overlay-container'
+  const overlayElementContainer = document.createElement("div");
+  overlayElementContainer.setAttribute("class", "overlay-container");
+  overlayElementContainer.id = "overlay-container";
 
   let locationAndDate;
-  if (event.type !== "webinar--premium") locationAndDate = createOverlayLocationDate(event) 
-  const header = createEventOverlayHeader(event)
-  const border = createBorder(className, event, true)
-  const content = createEventOverlayContent(event)
-  const footer = createEventOverlayFooter(event)
+  if (event.type !== "webinar--premium")
+    locationAndDate = createOverlayLocationDate(event);
+  const header = createEventOverlayHeader(event);
+  const border = createBorder(className, event, true);
+  const content = createEventOverlayContent(event);
+  const footer = createEventOverlayFooter(event);
 
-  overlayElementContainer.appendChild(header)
-  overlayElementContainer.appendChild(border)
-  overlayElementContainer.appendChild(content)
-  if (!!locationAndDate) overlayElementContainer.appendChild(locationAndDate)
-  overlayElementContainer.appendChild(footer)
+  overlayElementContainer.appendChild(header);
+  overlayElementContainer.appendChild(border);
+  overlayElementContainer.appendChild(content);
+  if (!!locationAndDate) overlayElementContainer.appendChild(locationAndDate);
+  overlayElementContainer.appendChild(footer);
 
-  addEventIntoDOM(overlayType, overlayElementContainer)
+  addEventIntoDOM(overlayType, overlayElementContainer);
 }
 
 /**
@@ -374,19 +392,19 @@ function createEventOverlay(event, overlayType) {
  * @param {Object} event Event data object
  */
 function createEventOverlayHeader(event) {
-  const header = document.createElement('div');
-  header.setAttribute('class', 'overlay__header')
+  const header = document.createElement("div");
+  header.setAttribute("class", "overlay__header");
 
-  const title = document.createElement('div');
-  title.setAttribute('class', 'overlay__title')
+  const title = document.createElement("div");
+  title.setAttribute("class", "overlay__title");
   if (event.premium) {
-    overlayPremiumWarningTitle
-    title.appendChild(document.createTextNode(overlayPremiumWarningTitle))
+    overlayPremiumWarningTitle;
+    title.appendChild(document.createTextNode(overlayPremiumWarningTitle));
   } else {
-    title.appendChild(document.createTextNode(`${event.title}`))
+    title.appendChild(document.createTextNode(`${event.title}`));
   }
-  
-  header.appendChild(title)
+
+  header.appendChild(title);
 
   return header;
 }
@@ -396,20 +414,22 @@ function createEventOverlayHeader(event) {
  * @param {Object} event Event data object
  */
 function createEventOverlayContent(event) {
-  const content = document.createElement('div');
-  content.setAttribute('class', 'overlay__content')
+  const content = document.createElement("div");
+  content.setAttribute("class", "overlay__content");
 
-  const paragraph = document.createElement('div');
-  paragraph.setAttribute('class', 'event__text')
+  const paragraph = document.createElement("div");
+  paragraph.setAttribute("class", "event__text");
 
   // if the event is a premium webinar, show warning, else show event content
   if (event.premium) {
-    paragraph.appendChild(document.createTextNode(overlayPremiumWarningContent))
+    paragraph.appendChild(
+      document.createTextNode(overlayPremiumWarningContent)
+    );
   } else {
-    paragraph.appendChild(document.createTextNode(`${event.content}`))
+    paragraph.appendChild(document.createTextNode(`${event.content}`));
   }
 
-  content.appendChild(paragraph)
+  content.appendChild(paragraph);
 
   return content;
 }
@@ -419,26 +439,29 @@ function createEventOverlayContent(event) {
  * @param {Object} event Event data object
  */
 function createOverlayLocationDate(event) {
-  const locationAndDateContainer = document.createElement('div');
-  locationAndDateContainer.setAttribute('class', 'overlay__location-date-container')
+  const locationAndDateContainer = document.createElement("div");
+  locationAndDateContainer.setAttribute(
+    "class",
+    "overlay__location-date-container"
+  );
 
-  const location = document.createElement('div');
-  location.setAttribute('class', 'overlay__location')
-  location.appendChild(document.createTextNode(`${event.location}`))
+  const location = document.createElement("div");
+  location.setAttribute("class", "overlay__location");
+  location.appendChild(document.createTextNode(`${event.location}`));
 
-  const separator = document.createElement('div');
-  separator.setAttribute('class', 'overlay__separator')
-  separator.appendChild(document.createTextNode(" - "))
-  
-  const date = document.createElement('div');
-  date.setAttribute('class', 'overlay__date')
-  date.appendChild(document.createTextNode(`${event.date}`))
+  const separator = document.createElement("div");
+  separator.setAttribute("class", "overlay__separator");
+  separator.appendChild(document.createTextNode(" - "));
 
-  locationAndDateContainer.appendChild(location)
-  locationAndDateContainer.appendChild(separator)
-  locationAndDateContainer.appendChild(date)
+  const date = document.createElement("div");
+  date.setAttribute("class", "overlay__date");
+  date.appendChild(document.createTextNode(`${event.date}`));
 
-  return locationAndDateContainer
+  locationAndDateContainer.appendChild(location);
+  locationAndDateContainer.appendChild(separator);
+  locationAndDateContainer.appendChild(date);
+
+  return locationAndDateContainer;
 }
 
 /**
@@ -449,53 +472,54 @@ function createEventOverlayFooter(event) {
   let buttonColor;
 
   // change button border color based on event state
-  if (event.type === 'webinar--free') {
+  if (event.type === "webinar--free") {
     buttonColor = `overlay__registration-button--webinar--free`;
-  } else if (event.type === 'webinar--premium') {
-    buttonColor = `overlay__registration-button--danger`
+  } else if (event.type === "webinar--premium") {
+    buttonColor = `overlay__registration-button--danger`;
   } else {
-    buttonColor = `overlay__registration-button--${event.type}`
+    buttonColor = `overlay__registration-button--${event.type}`;
   }
 
-  const footer = document.createElement('div');
-  footer.setAttribute('class', 'overlay__footer')
-  footer.id = "overlay__footer"
+  const footer = document.createElement("div");
+  footer.setAttribute("class", "overlay__footer");
+  footer.id = "overlay__footer";
 
-  const registrationButtonContainer = document.createElement('div')
-  registrationButtonContainer.setAttribute("class", "overlay__registration-container")
+  const registrationButtonContainer = document.createElement("div");
+  registrationButtonContainer.setAttribute(
+    "class",
+    "overlay__registration-container"
+  );
 
   const registrationButton = document.createElement("button");
-  registrationButton.classList.add(
-    "overlay__registration-button",
-    buttonColor
-  );
-  registrationButton.setAttribute("type", "button")
+  registrationButton.classList.add("overlay__registration-button", buttonColor);
+  registrationButton.setAttribute("type", "button");
 
   // depending on if the event is a premium webinar or not, fire different click events
   if (event.premium) {
-    registrationButton.addEventListener('click', redirectRegistration.bind(null))
+    registrationButton.addEventListener(
+      "click",
+      redirectRegistration.bind(null)
+    );
   } else {
-    console.log('button called on overlay render')
-    registrationButton.addEventListener('click', registerUserForEvent.bind(null, event.title))
-    registrationButton.id = "overlay__registration-button"
+    registrationButton.addEventListener(
+      "click",
+      registerUserForEvent.bind(null, event.title)
+    );
+    registrationButton.id = "overlay__registration-button";
   }
-
-  // get data from state to verify if event has been registered for by this user
-  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
-  const stateEvent = stateEvents.filter(e => e.title === event.title)
 
   // change button text based on if event is premium webinar and on user's registration status
   if (event.premium) {
-    registerButtonText = "Get Premium"
-  } else if (stateEvent[0].status === "unregistered") {
-    registerButtonText = "Register Now!"
-  } 
-  
+    registerButtonText = "Get Premium";
+  } else {
+    registerButtonText = "Register Now!";
+  }
+
   registrationButton.appendChild(document.createTextNode(registerButtonText));
 
-  registrationButtonContainer.appendChild(registrationButton)
-  
-  footer.appendChild(registrationButtonContainer)
+  registrationButtonContainer.appendChild(registrationButton);
+
+  footer.appendChild(registrationButtonContainer);
 
   return footer;
 }
@@ -506,89 +530,71 @@ function createEventOverlayFooter(event) {
  */
 function removeOverlayFromDOM(element) {
   element.style.display = "none";
-  element.removeChild(element.firstElementChild)
+  element.removeChild(element.firstElementChild);
   overlayStatus = !overlayStatus;
 }
 
 /**
  * Insert and display overlay in the DOM
- * @param {Object} event Event data object    
+ * @param {Object} event Event data object
  * @param {String} element Event Parent class name
  * @param {String} className Event class name
  */
 function insertOverlayIntoDOM(event, element, className) {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
-    createEventOverlay(event, className)
+    createEventOverlay(event, className);
     element.style.display = "flex";
     element.style.alignItems = "center";
     element.style.justifyContent = "center";
-  } 
+  }
 }
 
 /**
- * Register user for event. Events are stored in localstorage along with user data.
- * When user registers for an event, that state event status is switched to register
- * and an event entry is added to a user's registeredEvent array
- * @param {Object} event Event data object
+ * Loop through events and check to see if event has been registered for.
+ * Swtich event status to 'registered' and display confirmation for the user.
+ * @param {String} event Event title
  */
 function registerUserForEvent(eventTitle) {
-  const registrationButton = document.getElementById("overlay__registration-button")
-  const overlayRegistrationMessage = createRegistrationConfirmationMessage()
-  const overlayFooter = document.getElementById("overlay__footer")
 
-  // get state events
-  const stateEvents = JSON.parse(window.localStorage.getItem('events'))
-  // get user from state
-  const stateUser = JSON.parse(window.localStorage.getItem('user'))
-  console.log('stateUser', stateUser)
-  // check to see if user already registered for the event
-  const alreadyRegistered = stateUser.registeredEvents.some(stateUserEvent => stateUserEvent.title === eventTitle)
-  // if user hasn't registered yet
-  if (!alreadyRegistered) {
+  const overlayRegistrationMessage = createRegistrationConfirmationMessage();
+  const overlayFooter = document.getElementById("overlay__footer");
 
-    // change event status to regiestered
-    let registeredEvent;
-    stateEvents.filter(e => {
-      if (e.title === eventTitle) {
-        e.status = 'registered';
-        registeredEvent = e;
-      }
-    })
+  let regError;
+  events.forEach(e => {
+    if (e.title === eventTitle) {
+      if (e.status === 'registered') regError = true;
+      else e.status = 'registered'
+    }
+  })
 
-    // update event items in state
-    window.localStorage.setItem('events', JSON.stringify(stateEvents))
-    // add event to user's registered events array
-    console.log('adding data to user')
-    stateUser.registeredEvents.push(registeredEvent)
-  }
   // add reg message to footer
-  overlayFooter.appendChild(overlayRegistrationMessage)
+  overlayFooter.appendChild(overlayRegistrationMessage);
 
   // display reg message
-  overlayRegistrationMessage.style.display = "flex"
-  overlayRegistrationMessage.style.alignItems = "center"
-  overlayRegistrationMessage.style.justifyContent = "center"
-
-  console.log('alreadyRegistered', alreadyRegistered)
-  if (alreadyRegistered) {
-     overlayRegistrationMessage.style.backgroundColor = "#b91b15" 
-     overlayRegistrationMessage.innerHTML = "Already Registered!"
-   } else { 
-     overlayRegistrationMessage.style.backgroundColor = "#48b915"
-    }
+  overlayRegistrationMessage.style.display = "flex";
+  overlayRegistrationMessage.style.alignItems = "center";
+  overlayRegistrationMessage.style.justifyContent = "center";
   
-  setInterval(() => {
-    overlayRegistrationMessage.style.display = "none"
-  }, 2000);
+  // show either success or error message
+  if (regError) {
+    overlayRegistrationMessage.style.backgroundColor = "#b91b15";
+    overlayRegistrationMessage.innerHTML = "Already Registered!";
+  } else {
+    overlayRegistrationMessage.style.backgroundColor = "#48b915";
+  }
 
+  // remove message after 2 seconds
+  setInterval(() => {
+    overlayRegistrationMessage.style.display = "none";
+  }, 2000);
 }
 
 /**
  * Redirect user to vanhack's premium page
  */
 function redirectRegistration() {
-  window.open("https://vanhack.com/premium")
+  window.open("https://vanhack.com/premium");
 }
 
 function createRegistrationConfirmationMessage() {
@@ -596,45 +602,45 @@ function createRegistrationConfirmationMessage() {
   registrationSuccess.classList.add("overlay__registration-success");
   registrationSuccess.id = "overlay__registration-success";
   registrationSuccess.style.display = "none";
-  registrationSuccess.appendChild(document.createTextNode("Registered!"))
-  return registrationSuccess
-
+  registrationSuccess.appendChild(document.createTextNode("Registered!"));
+  return registrationSuccess;
 }
-
 
 /**
  * Close overlays and remove overlay children from DOM when clicking outside of the overlay-container
  * @param {Event} event DOM event
  */
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == overlayEventDetails) {
-    removeOverlayFromDOM(overlayEventDetails)
+    removeOverlayFromDOM(overlayEventDetails);
   } else if (event.target == overlayPremiumSignup) {
-    removeOverlayFromDOM(overlayPremiumSignup)
+    removeOverlayFromDOM(overlayPremiumSignup);
   }
-}
+};
 
 /**
  * Close overlays and remove overlay children from DOM when clicking the ESC key
  * @param {Event} event DOM event
  */
-window.onkeydown = function( event ) {
+window.onkeydown = function (event) {
   if (event.keyCode == 27 && overlayEventDetails.style.display == "flex") {
-    removeOverlayFromDOM(overlayEventDetails)
-  } else if (event.keyCode == 27 && overlayPremiumSignup.style.display == "flex") {
-    removeOverlayFromDOM(overlayPremiumSignup)
+    removeOverlayFromDOM(overlayEventDetails);
+  } else if (
+    event.keyCode == 27 &&
+    overlayPremiumSignup.style.display == "flex"
+  ) {
+    removeOverlayFromDOM(overlayPremiumSignup);
   }
 };
-
 
 /**
  * Setup event listeners when application is loading to prevent
  * them from throwing null errors
  */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const loadData = () => {
-    // wait for colors to load before creating events and assigning them into state
-    if (typeof colors !== 'undefined') {
+    // wait for colors to load before creating events and assigning them to events
+    if (typeof colors !== "undefined") {
       events = [
         {
           title: "We Still Hacking Amidst COVID19!",
@@ -646,11 +652,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "hackathon",
           color: {
             colorStart: colors.hackathon.start,
-            colorEnd: colors.hackathon.end
+            colorEnd: colors.hackathon.end,
           },
           icon: icons.hackathon,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -667,11 +672,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "hackathon",
           color: {
             colorStart: colors.hackathon.start,
-            colorEnd: colors.hackathon.end
+            colorEnd: colors.hackathon.end,
           },
           icon: icons.hackathon,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -688,11 +692,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "hackathon",
           color: {
             colorStart: colors.hackathon.start,
-            colorEnd: colors.hackathon.end
+            colorEnd: colors.hackathon.end,
           },
           icon: icons.hackathon,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -709,11 +712,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "leap",
           color: {
             colorStart: colors.leap.start,
-            colorEnd: colors.leap.end
+            colorEnd: colors.leap.end,
           },
           icon: icons.leap,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -730,11 +732,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "leap",
           color: {
             colorStart: colors.leap.start,
-            colorEnd: colors.leap.end
+            colorEnd: colors.leap.end,
           },
           icon: icons.leap,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -751,11 +752,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "mission",
           color: {
             colorStart: colors.mission.start,
-            colorEnd: colors.mission.end
+            colorEnd: colors.mission.end,
           },
           icon: icons.mission,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -772,11 +772,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "mission",
           color: {
             colorStart: colors.mission.start,
-            colorEnd: colors.mission.end
+            colorEnd: colors.mission.end,
           },
           icon: icons.mission,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -793,11 +792,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "mission",
           color: {
             colorStart: colors.mission.start,
-            colorEnd: colors.mission.end
+            colorEnd: colors.mission.end,
           },
           icon: icons.mission,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -814,11 +812,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "mission",
           color: {
             colorStart: colors.mission.start,
-            colorEnd: colors.mission.end
+            colorEnd: colors.mission.end,
           },
           icon: icons.mission,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -835,11 +832,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "meetup",
           color: {
             colorStart: colors.meetup.start,
-            colorEnd: colors.meetup.end
+            colorEnd: colors.meetup.end,
           },
           icon: icons.meetup,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -856,11 +852,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "meetup",
           color: {
             colorStart: colors.meetup.start,
-            colorEnd: colors.meetup.end
+            colorEnd: colors.meetup.end,
           },
           icon: icons.meetup,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -877,11 +872,10 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "webinar--free",
           color: {
             colorStart: colors.webinar.start,
-            colorEnd: colors.webinar.end
+            colorEnd: colors.webinar.end,
           },
           icon: icons.webinar,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -898,12 +892,11 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "webinar--premium",
           color: {
             colorStart: colors.webinar.start,
-            colorEnd: colors.webinar.end
+            colorEnd: colors.webinar.end,
           },
           icon: icons.webinar,
           premiumIcon: icons.premium,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
@@ -920,23 +913,18 @@ document.addEventListener('DOMContentLoaded', () => {
           type: "webinar--premium",
           color: {
             colorStart: colors.webinar.start,
-            colorEnd: colors.webinar.end
+            colorEnd: colors.webinar.end,
           },
           icon: icons.webinar,
           premiumIcon: icons.premium,
-          content:
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
           ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
           Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
           porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
           ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
-        
       ];
-      // assign events into localstorage to keep track of changes
-      window.localStorage.setItem('events', JSON.stringify(events))
-
     } else {
       // keep reloading function until DOM renders
       window.setTimeout(loadData, 250);
