@@ -24,7 +24,7 @@ section {
 }
 
 button:focus {
-  outline:none !important;
+  outline: none !important;
 }
 
 main {
@@ -160,8 +160,6 @@ main {
   height: 2%;
 }
 
-
-
 /* Event Item Content */
 .events__item-content {
   height: 55%;
@@ -275,7 +273,7 @@ main {
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 0)
     ),
-    linear-gradient(101deg, rgba(134,161,241,1), rgba(178,206,6,1));
+    linear-gradient(101deg, rgba(134, 161, 241, 1), rgba(178, 206, 6, 1));
 }
 
 .events__item-details-button:hover {
@@ -392,17 +390,17 @@ main {
 .lg--danger {
   background: linear-gradient(
       59deg,
-       rgba(200,33,33,1) 21%,
-       rgba(255,149,149,1) 100%
-       )
+      rgba(200, 33, 33, 1) 21%,
+      rgba(255, 149, 149, 1) 100%
+    )
     left bottom no-repeat;
 
   background: -webkit-linear-gradient(
-    59deg,
-     rgba(200,33,33,1) 21%,
-     rgba(255,149,149,1) 100%
-     )
-  left bottom no-repeat;
+      59deg,
+      rgba(200, 33, 33, 1) 21%,
+      rgba(255, 149, 149, 1) 100%
+    )
+    left bottom no-repeat;
 }
 
 /* Icon HTML Gradient for FA SVG */
@@ -447,7 +445,7 @@ main {
   right: 0;
   bottom: 0;
   z-index: 10;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* Overlay container */
@@ -458,7 +456,7 @@ main {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
-  animation: overlay-animation .5s ease;
+  animation: overlay-animation 0.5s ease;
 }
 
 @media only screen and (max-width: 768px) {
@@ -470,14 +468,13 @@ main {
 
 /* Overlay Container Animation on enter */
 @keyframes overlay-animation {
-  0%   { 
-    opacity: 0; 
+  0% {
+    opacity: 0;
     transform: translateY(-200px);
   }
-  100% { 
-    opacity: 1; 
+  100% {
+    opacity: 1;
     transform: translateY(0);
-
   }
 }
 
@@ -592,46 +589,81 @@ main {
   padding: 1rem 2rem;
   border-radius: 1rem;
   font-size: 2rem;
-  transition: all .2s ease-in;
+  transition: all 0.2s ease-in;
   cursor: pointer;
   border: none;
   color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* Overlay reg button hover */
 .overlay__registration-button:hover {
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15), 0 5px 5px rgba(0,0,0,0.23);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15), 0 5px 5px rgba(0, 0, 0, 0.23);
   transform: translateY(-3px);
 }
 
 .overlay__registration-button:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* Overlay reg button hover */
 .overlay__registration-button--hackathon {
-  background-image: linear-gradient(to right,rgba(6, 117, 206, 1) 0%,rgba(37, 193, 203, 1) 58%,rgba(6, 117, 206, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(6, 117, 206, 1) 0%,
+    rgba(37, 193, 203, 1) 58%,
+    rgba(6, 117, 206, 1) 100%
+  );
 }
 .overlay__registration-button--leap {
-  background-image: linear-gradient(to right,rgba(101, 222, 43, 1) 0%,rgba(177, 207, 83, 1) 58%,rgba(101, 222, 43, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(101, 222, 43, 1) 0%,
+    rgba(177, 207, 83, 1) 58%,
+    rgba(101, 222, 43, 1) 100%
+  );
 }
 .overlay__registration-button--mission {
-  background-image: linear-gradient(to right,rgba(255, 123, 55, 1) 0%,rgba(255, 186, 54, 1) 58%,rgba(255, 123, 55, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 123, 55, 1) 0%,
+    rgba(255, 186, 54, 1) 58%,
+    rgba(255, 123, 55, 1) 100%
+  );
 }
 .overlay__registration-button--webinar--free {
-  background-image: linear-gradient(to right,rgba(113, 6, 206, 1) 0%,rgba(186, 156, 156, 1) 58%,rgba(113, 6, 206, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(113, 6, 206, 1) 0%,
+    rgba(186, 156, 156, 1) 58%,
+    rgba(113, 6, 206, 1) 100%
+  );
 }
 .overlay__registration-button--webinar--premium {
-  background-image: linear-gradient(to right,rgba(113, 6, 206, 1) 0%,rgba(186, 156, 156, 1) 58%,rgba(113, 6, 206, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(113, 6, 206, 1) 0%,
+    rgba(186, 156, 156, 1) 58%,
+    rgba(113, 6, 206, 1) 100%
+  );
 }
 .overlay__registration-button--meetup {
-  background-image: linear-gradient(to right,rgba(134, 161, 241, 1) 0%,rgba(178, 206, 6, 1) 58%,rgba(134, 161, 241, 1) 100%);
+  background-image: linear-gradient(
+    to right,
+    rgba(134, 161, 241, 1) 0%,
+    rgba(178, 206, 6, 1) 58%,
+    rgba(134, 161, 241, 1) 100%
+  );
 }
 .overlay__registration-button--danger {
-  background-image: linear-gradient(to right,rgba(200,33,33,1) 0%,rgba(255,149,149,1) 58%,rgba(200,33,33,1) 100%);
-}     
+  background-image: linear-gradient(
+    to right,
+    rgba(200, 33, 33, 1) 0%,
+    rgba(255, 149, 149, 1) 58%,
+    rgba(200, 33, 33, 1) 100%
+  );
+}
 
 .overlay__registration-success {
   font-size: 1rem;
