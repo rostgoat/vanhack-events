@@ -110,7 +110,7 @@ main {
   width: 20%;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1024px) {
   .events__item--bottom {
     width: 30%;
   }
@@ -537,9 +537,18 @@ main {
 .overlay__footer {
   height: 20%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+}
+
+.overlay__registration-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
 }
 
 /* Overlay title */
@@ -623,3 +632,12 @@ main {
 .overlay__registration-button--danger {
   background-image: linear-gradient(to right,rgba(200,33,33,1) 0%,rgba(255,149,149,1) 58%,rgba(200,33,33,1) 100%);
 }     
+
+.overlay__registration-success {
+  font-size: 1rem;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 5px;
+  width: 25%;
+  margin-top: 4px;
+}

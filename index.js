@@ -459,6 +459,10 @@ function createEventOverlayFooter(event) {
 
   const footer = document.createElement('div');
   footer.setAttribute('class', 'overlay__footer')
+  footer.id = "overlay__footer"
+
+  const registrationButtonContainer = document.createElement('div')
+  registrationButtonContainer.setAttribute("class", "overlay__registration-container")
 
   const registrationButton = document.createElement("button");
   registrationButton.classList.add(
@@ -471,6 +475,7 @@ function createEventOverlayFooter(event) {
   if (event.premium) {
     registrationButton.addEventListener('click', redirectRegistration.bind(null))
   } else {
+    console.log('button called on overlay render')
     registrationButton.addEventListener('click', registerUserForEvent.bind(null, event.title))
     registrationButton.id = "overlay__registration-button"
   }
@@ -484,12 +489,14 @@ function createEventOverlayFooter(event) {
     registerButtonText = "Get Premium"
   } else if (stateEvent[0].status === "unregistered") {
     registerButtonText = "Register Now!"
-  } else {
-    registerButtonText = "Registered"
-  }
+  } 
   
   registrationButton.appendChild(document.createTextNode(registerButtonText));
-  footer.appendChild(registrationButton)
+
+  registrationButtonContainer.appendChild(registrationButton)
+  
+  footer.appendChild(registrationButtonContainer)
+
   return footer;
 }
 
@@ -526,15 +533,19 @@ function insertOverlayIntoDOM(event, element, className) {
  * @param {Object} event Event data object
  */
 function registerUserForEvent(eventTitle) {
+  const registrationButton = document.getElementById("overlay__registration-button")
+  const overlayRegistrationMessage = createRegistrationConfirmationMessage()
+  const overlayFooter = document.getElementById("overlay__footer")
+
   // get state events
   const stateEvents = JSON.parse(window.localStorage.getItem('events'))
   // get user from state
   const stateUser = JSON.parse(window.localStorage.getItem('user'))
+  console.log('stateUser', stateUser)
   // check to see if user already registered for the event
   const alreadyRegistered = stateUser.registeredEvents.some(stateUserEvent => stateUserEvent.title === eventTitle)
   // if user hasn't registered yet
   if (!alreadyRegistered) {
-    const registrationButton = document.getElementById("overlay__registration-button")
 
     // change event status to regiestered
     let registeredEvent;
@@ -548,12 +559,29 @@ function registerUserForEvent(eventTitle) {
     // update event items in state
     window.localStorage.setItem('events', JSON.stringify(stateEvents))
     // add event to user's registered events array
+    console.log('adding data to user')
     stateUser.registeredEvents.push(registeredEvent)
-    // disable reg button for the event for the user
-    registrationButton.disabled = true;
-    // change button text
-    registrationButton.innerHTML = "Registered!"
   }
+  // add reg message to footer
+  overlayFooter.appendChild(overlayRegistrationMessage)
+
+  // display reg message
+  overlayRegistrationMessage.style.display = "flex"
+  overlayRegistrationMessage.style.alignItems = "center"
+  overlayRegistrationMessage.style.justifyContent = "center"
+
+  console.log('alreadyRegistered', alreadyRegistered)
+  if (alreadyRegistered) {
+     overlayRegistrationMessage.style.backgroundColor = "#b91b15" 
+     overlayRegistrationMessage.innerHTML = "Already Registered!"
+   } else { 
+     overlayRegistrationMessage.style.backgroundColor = "#48b915"
+    }
+  
+  setInterval(() => {
+    overlayRegistrationMessage.style.display = "none"
+  }, 2000);
+
 }
 
 /**
@@ -561,6 +589,16 @@ function registerUserForEvent(eventTitle) {
  */
 function redirectRegistration() {
   window.open("https://vanhack.com/premium")
+}
+
+function createRegistrationConfirmationMessage() {
+  const registrationSuccess = document.createElement("div");
+  registrationSuccess.classList.add("overlay__registration-success");
+  registrationSuccess.id = "overlay__registration-success";
+  registrationSuccess.style.display = "none";
+  registrationSuccess.appendChild(document.createTextNode("Registered!"))
+  return registrationSuccess
+
 }
 
 
@@ -599,8 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof colors !== 'undefined') {
       events = [
         {
-          id: 0,
-          title: "We still hacking amidst COVID19!",
+          title: "We Still Hacking Amidst COVID19!",
           date: "June 26, 2020",
           position: "top",
           premium: false,
@@ -621,8 +658,49 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 1,
-          title: "Let's take a leap into this new adventure!",
+          title: "BCIT Hackathon Live!",
+          date: "June 27, 2020",
+          position: "top",
+          premium: false,
+          status: "unregistered",
+          location: "Burnaby, BC",
+          type: "hackathon",
+          color: {
+            colorStart: colors.hackathon.start,
+            colorEnd: colors.hackathon.end
+          },
+          icon: icons.hackathon,
+          content:
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
+        },
+        {
+          title: "Biggest Xmas Hackathon in Canada",
+          date: "Dec 26, 2020",
+          position: "top",
+          premium: false,
+          status: "unregistered",
+          location: "Remote",
+          type: "hackathon",
+          color: {
+            colorStart: colors.hackathon.start,
+            colorEnd: colors.hackathon.end
+          },
+          icon: icons.hackathon,
+          content:
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
+        },
+        {
+          title: "Let's Take a Leap Into This New Adventure!",
           date: "June 30, 2020",
           position: "top",
           premium: false,
@@ -643,7 +721,27 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 2,
+          title: "Come Join Our Women's Coding Bootcamp!",
+          date: "Aug 7, 2020",
+          position: "top",
+          premium: false,
+          status: "unregistered",
+          location: "Chicago, IL",
+          type: "leap",
+          color: {
+            colorStart: colors.leap.start,
+            colorEnd: colors.leap.end
+          },
+          icon: icons.leap,
+          content:
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
+        },
+        {
           title: "Rebuilding our organization in 3 easy steps",
           date: "July 3, 2020",
           position: "top",
@@ -665,7 +763,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 3,
           title: "Rebuilding our organization in 3 easy steps",
           date: "July 3, 2020",
           position: "top",
@@ -687,7 +784,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 4,
           title: "Let's do this",
           date: "Aug 6, 2020",
           position: "top",
@@ -709,7 +805,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 5,
           title: "Expanding dev teams post COVID",
           date: "Sept 15, 2020",
           position: "top",
@@ -731,7 +826,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 6,
           title: "Node.js Meetup in Seattle",
           date: "July 15, 2020",
           position: "bottom",
@@ -753,7 +847,27 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 7,
+          title: "Come Learn About AWS Services!",
+          date: "July 30, 2020",
+          position: "bottom",
+          premium: false,
+          status: "unregistered",
+          location: "Vancouver, WA",
+          type: "meetup",
+          color: {
+            colorStart: colors.meetup.start,
+            colorEnd: colors.meetup.end
+          },
+          icon: icons.meetup,
+          content:
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
+        },
+        {
           title: "OpenGL Webinar",
           date: "July 12, 2020",
           position: "bottom",
@@ -775,7 +889,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
         {
-          id: 8,
           title: "Java Webinar with special guest",
           date: "July 13, 2020",
           position: "bottom",
@@ -797,8 +910,31 @@ document.addEventListener('DOMContentLoaded', () => {
           ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
           ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
         },
+        {
+          title: "Special Webinar with VSW Team!",
+          date: "July 14, 2020",
+          position: "bottom",
+          premium: true,
+          status: "unregistered",
+          location: "Los Angeles, CA",
+          type: "webinar--premium",
+          color: {
+            colorStart: colors.webinar.start,
+            colorEnd: colors.webinar.end
+          },
+          icon: icons.webinar,
+          premiumIcon: icons.premium,
+          content:
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor dolor 
+          ullamcorper maximus tincidunt. Vestibulum mattis enim a neque auctor luctus. 
+          Aenean molestie venenatis arcu, quis volutpat metus vehicula vitae. Nullam 
+          porttitor, quam tincidunt blandit tristique, nisl tortor sagittis nulla, 
+          ullamcorper dignissim ligula odio ac ipsum. Curabitur metus risus, ultricies 
+          ut ex at, consequat tempus est. Etiam iaculis odio a arcu varius, et volutpat `,
+        },
         
       ];
+      // assign events into localstorage to keep track of changes
       window.localStorage.setItem('events', JSON.stringify(events))
 
     } else {
