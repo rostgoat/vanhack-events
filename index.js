@@ -73,23 +73,23 @@ Uh-Oh..You Need Premium to Register for this Event!
 `;
 const overlayPremiumWarningContent = `
 VanHack Premium is pretty sweet. You get so many cool features,
-          including access to this event! Sign up now for only $9.99 a month!
+          including access to this event! Sign up now for only $65 a month!
 `;
 
 /**
  * Initialize all the data at the start of the application
  */
-function init() {
-  events.forEach(function (event) {
+const init = () => {
+  events.forEach((event) => {
     createEventItem(event);
   });
-}
+};
 
 /**
  * Create event object in with and append it to DOM
  * @param {Object} event Event Object
  */
-function createEventItem(event) {
+const createEventItem = (event) => {
   const eventItem = document.createElement("div");
   const type = event.type;
   const className = "events__item-header-border";
@@ -111,7 +111,7 @@ function createEventItem(event) {
   eventItem.appendChild(footer);
 
   addEventIntoDOM(event.type, eventItem);
-}
+};
 
 /**
  * Append event/overlay elements into the DOM
@@ -119,7 +119,7 @@ function createEventItem(event) {
  * @param {String} type Event type
  * @param {XMLDocument } type eventElement
  */
-function addEventIntoDOM(type, eventElement) {
+const addEventIntoDOM = (type, eventElement) => {
   switch (type) {
     case "hackathon":
       return eventsListHackathon.appendChild(eventElement);
@@ -140,12 +140,12 @@ function addEventIntoDOM(type, eventElement) {
     default:
       return;
   }
-}
+};
 
 /**
  * Create Event header
  */
-function createEventHeader(event) {
+const createEventHeader = (event) => {
   const eventItemHeader = document.createElement("div");
   eventItemHeader.classList.add(
     "events__item-header",
@@ -173,7 +173,7 @@ function createEventHeader(event) {
   eventItemHeader.appendChild(eventItemHeaderWrapper);
 
   return eventItemHeader;
-}
+};
 
 /**
  * Create colorful border for box elements
@@ -181,7 +181,7 @@ function createEventHeader(event) {
  * @param {Object} event Event to render
  * @param {Boolean} customColor flag for custom color
  */
-function createBorder(className, event, customColor) {
+const createBorder = (className, event, customColor) => {
   const borderColor =
     event.type === "webinar--premium" && customColor
       ? `lg--danger`
@@ -190,13 +190,13 @@ function createBorder(className, event, customColor) {
   eventBorder.classList.add(className, borderColor);
 
   return eventBorder;
-}
+};
 
 /**
  * Create Event content
  * @param {Object} event Event Object
  */
-function createEventContent(event) {
+const createEventContent = (event) => {
   const eventContent = document.createElement("div");
   eventContent.setAttribute("class", "events__item-content");
 
@@ -246,12 +246,12 @@ function createEventContent(event) {
   eventContent.appendChild(eventContentDataWrapper);
 
   return eventContent;
-}
+};
 
 /**
  * Create Event Footer
  */
-function createEventFooter(event) {
+const createEventFooter = (event) => {
   const eventFooter = document.createElement("div");
   eventFooter.setAttribute("class", "events__item-footer");
 
@@ -323,13 +323,13 @@ function createEventFooter(event) {
   eventFooter.appendChild(eventDetails);
 
   return eventFooter;
-}
+};
 
 /**
  * Setup svg icons for event in DOM
  * @param {Object} event Event Object
  */
-function createEventSVG(event) {
+const createEventSVG = (event) => {
   const svgURI = "http://www.w3.org/2000/svg";
 
   const svg = document.createElementNS(svgURI, "svg");
@@ -356,14 +356,14 @@ function createEventSVG(event) {
   svg.appendChild(radialGradient);
 
   return svg;
-}
+};
 
 /**
  * Display overlay on event click
  * @param {Object} event Event data object
  * @param {String} overlayType Premium or Regular overlay
  */
-function createEventOverlay(event, overlayType) {
+const createEventOverlay = (event, overlayType) => {
   const className = "overlay__header-border";
 
   const overlayElementContainer = document.createElement("div");
@@ -385,13 +385,13 @@ function createEventOverlay(event, overlayType) {
   overlayElementContainer.appendChild(footer);
 
   addEventIntoDOM(overlayType, overlayElementContainer);
-}
+};
 
 /**
  * Create overlay header
  * @param {Object} event Event data object
  */
-function createEventOverlayHeader(event) {
+const createEventOverlayHeader = (event) => {
   const header = document.createElement("div");
   header.setAttribute("class", "overlay__header");
 
@@ -407,13 +407,13 @@ function createEventOverlayHeader(event) {
   header.appendChild(title);
 
   return header;
-}
+};
 
 /**
  * Create overlay content
  * @param {Object} event Event data object
  */
-function createEventOverlayContent(event) {
+const createEventOverlayContent = (event) => {
   const content = document.createElement("div");
   content.setAttribute("class", "overlay__content");
 
@@ -432,13 +432,13 @@ function createEventOverlayContent(event) {
   content.appendChild(paragraph);
 
   return content;
-}
+};
 
 /**
  * Create date and location container
  * @param {Object} event Event data object
  */
-function createOverlayLocationDate(event) {
+const createOverlayLocationDate = (event) => {
   const locationAndDateContainer = document.createElement("div");
   locationAndDateContainer.setAttribute(
     "class",
@@ -462,13 +462,13 @@ function createOverlayLocationDate(event) {
   locationAndDateContainer.appendChild(date);
 
   return locationAndDateContainer;
-}
+};
 
 /**
  * Create overlay footer
  * @param {Object} event Event data object
  */
-function createEventOverlayFooter(event) {
+const createEventOverlayFooter = (event) => {
   let buttonColor;
 
   // change button border color based on event state
@@ -522,17 +522,17 @@ function createEventOverlayFooter(event) {
   footer.appendChild(registrationButtonContainer);
 
   return footer;
-}
+};
 
 /**
  * Remove specified overlay from the DOM and switch overlay status to closed
  * @param {String} element Element's class name
  */
-function removeOverlayFromDOM(element) {
+const removeOverlayFromDOM = (element) => {
   element.style.display = "none";
   element.removeChild(element.firstElementChild);
   overlayStatus = !overlayStatus;
-}
+};
 
 /**
  * Insert and display overlay in the DOM
@@ -540,7 +540,7 @@ function removeOverlayFromDOM(element) {
  * @param {String} element Event Parent class name
  * @param {String} className Event class name
  */
-function insertOverlayIntoDOM(event, element, className) {
+const insertOverlayIntoDOM = (event, element, className) => {
   overlayStatus = !overlayStatus;
   if (overlayStatus) {
     createEventOverlay(event, className);
@@ -548,25 +548,24 @@ function insertOverlayIntoDOM(event, element, className) {
     element.style.alignItems = "center";
     element.style.justifyContent = "center";
   }
-}
+};
 
 /**
  * Loop through events and check to see if event has been registered for.
  * Swtich event status to 'registered' and display confirmation for the user.
  * @param {String} event Event title
  */
-function registerUserForEvent(eventTitle) {
-
+const registerUserForEvent = (eventTitle) => {
   const overlayRegistrationMessage = createRegistrationConfirmationMessage();
   const overlayFooter = document.getElementById("overlay__footer");
 
   let regError;
-  events.forEach(e => {
+  events.forEach((e) => {
     if (e.title === eventTitle) {
-      if (e.status === 'registered') regError = true;
-      else e.status = 'registered'
+      if (e.status === "registered") regError = true;
+      else e.status = "registered";
     }
-  })
+  });
 
   // add reg message to footer
   overlayFooter.appendChild(overlayRegistrationMessage);
@@ -575,7 +574,7 @@ function registerUserForEvent(eventTitle) {
   overlayRegistrationMessage.style.display = "flex";
   overlayRegistrationMessage.style.alignItems = "center";
   overlayRegistrationMessage.style.justifyContent = "center";
-  
+
   // show either success or error message
   if (regError) {
     overlayRegistrationMessage.style.backgroundColor = "#b91b15";
@@ -588,29 +587,29 @@ function registerUserForEvent(eventTitle) {
   setInterval(() => {
     overlayRegistrationMessage.style.display = "none";
   }, 2000);
-}
+};
 
 /**
  * Redirect user to vanhack's premium page
  */
-function redirectRegistration() {
+const redirectRegistration = () => {
   window.open("https://vanhack.com/premium");
-}
+};
 
-function createRegistrationConfirmationMessage() {
+const createRegistrationConfirmationMessage = () => {
   const registrationSuccess = document.createElement("div");
   registrationSuccess.classList.add("overlay__registration-success");
   registrationSuccess.id = "overlay__registration-success";
   registrationSuccess.style.display = "none";
   registrationSuccess.appendChild(document.createTextNode("Registered!"));
   return registrationSuccess;
-}
+};
 
 /**
  * Close overlays and remove overlay children from DOM when clicking outside of the overlay-container
  * @param {Event} event DOM event
  */
-window.onclick = function (event) {
+window.onclick = (event) => {
   if (event.target == overlayEventDetails) {
     removeOverlayFromDOM(overlayEventDetails);
   } else if (event.target == overlayPremiumSignup) {
@@ -622,7 +621,7 @@ window.onclick = function (event) {
  * Close overlays and remove overlay children from DOM when clicking the ESC key
  * @param {Event} event DOM event
  */
-window.onkeydown = function (event) {
+window.onkeydown = (event) => {
   if (event.keyCode == 27 && overlayEventDetails.style.display == "flex") {
     removeOverlayFromDOM(overlayEventDetails);
   } else if (
@@ -926,13 +925,13 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       ];
     } else {
-      // keep reloading function until DOM renders
+      // keep reloading const until =  DOM render=>s
       window.setTimeout(loadData, 250);
       window.setTimeout(init, 250);
     }
   };
   // Initialize
   loadData();
-  // run this function when application first loads in the DOM
+  // run this const when =  application first loads in the DO=>M
   init();
 });
